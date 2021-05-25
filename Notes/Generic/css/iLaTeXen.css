@@ -1,0 +1,798 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=PT+Serif|PT+Serif+Caption|PT+Mono|Source+Sans+Pro:200,400");
+
+.corollary {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+
+.corollary:before {
+    display:block;
+    content: "(" attr(data-count) ") COROLLARY.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+.definition {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+
+.definition:before {
+    display:block;
+    content: "(" attr(data-count) ") DEFINITION.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+.emphasize {
+  display: block;
+  margin: 12px 0;
+  font-style: normal;
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 1px; 
+  background-color: #f8f2ed;
+  padding: 10px; }
+ 
+
+.Examplebutton:before {
+    content: " Example";
+}
+
+.Exampleno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+
+.example {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 5px; 
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+.example:before {
+    display:block;
+    content: "(" attr(data-count) ") EXAMPLE.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+.Exercisebutton:before {
+    content: " Exercise";
+}
+
+.Exerciseno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+.exercise {
+  display: block;
+  margin: 12px 0;
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+.exercise:before {
+    display:block;
+    content: "(" attr(data-count) ") Exercise.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+
+figcaption {
+  text-align: center;
+  padding: 5px; }
+
+.figure {
+    display: block;
+    margin: 12px 0;
+    padding: 10px;
+/*    border-style: solid;
+    border-width: 2px;
+    border-color: #ccc; */
+}
+
+.figure:before {
+    content: "(" attr(data-count) ") FIGURE.";
+    display:block;
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+
+}
+
+.figurestar {
+  display: block;
+  margin: 12px 0;
+  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc;
+ }
+
+.frameit {
+  display: block;
+  margin: 12px 0;
+  font-style: normal;
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 2px;
+  padding: 10px; }
+
+
+.Hintbutton:before {
+    content: "Hint";
+}
+		      
+.hint {
+  display: block;
+}
+
+.hint {
+    padding-bottom: 20px;
+}
+
+
+.hint:before {
+    content: "Hint.";s
+    font-style: italic;
+}
+
+
+
+
+.Proof:after{
+     font-weight: bold;
+     content: "QED.";
+     float: right;
+}
+
+
+.Proofbutton:before {
+    content: "Proof";
+}
+		      
+.proof {
+  display: block;
+  /* margin-right: 12px; */ 
+  /*    background-color:#d3d3d3; */ }
+
+.proof {
+  padding-bottom: 20px; }
+
+
+.proof:before {
+
+    content: "Proof.";
+    font-style: italic;
+
+}
+
+.proof:after {
+  /* content: "\25FC"; */
+  font-weight: bold;
+  content: "QED.";
+  float: right; }
+
+.Quizexercisebutton:before {
+    content: " Quiz";
+}
+
+.Quizexerciseno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+.quizexercise {
+  display: block;
+  margin: 12px 0;
+  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+.quizexercise:before {
+    display:block;
+    content: "(" attr(data-count) ") Quiz.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+
+
+.Sagebutton:before {
+    content: " Sage";
+}
+
+.Sageno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+
+
+.Theorembutton:before {
+    content: " Theorem";
+}
+
+.Theoremno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+.theorem {
+  display: block;
+  margin: 12px 0;
+/*  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+.theorem:before {
+    display:block;
+    content: "(" attr(data-count) ") THEOREM.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+.video {
+  display: block;
+  margin: 12px 0;
+  padding: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+.video:before {
+    content: "(" attr(data-count) ") VIDEO.";
+    display:block;
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+
+
+.proposition {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+.proposition:before {
+    display:block;
+    content: "(" attr(data-count) ") PROPOSITION.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+.Quizbutton:before {
+    content: " Quiz";
+}
+
+.Quizno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+.quiz {
+  display: block;
+  margin: 12px 0;
+  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+.quiz:before {
+    display:block;
+    content: "(" attr(data-count) ") QUIZ.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+.Remarkbutton:before {
+    content: " Remark";
+}
+
+.Remarkno:before {
+    font-weight: bold;
+    font-style: normal;
+    content: "(" attr(data-count) ")  ";
+}
+
+
+.remark {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; 
+  padding: 10px;
+   border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+.remark:before {
+    display:block;
+    content: "(" attr(data-count) ") REMARK.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+.lemma {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf;
+  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+.lemma:before {
+    display:block;
+    content: "(" attr(data-count) ") LEMMA.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
+#wrapper {
+  text-align: left;
+  border: 1px solid #ccc;
+  /* background-color:#f0f0f0; */
+  margin: 0 auto;
+  width: 90%;
+  padding: 30px; }
+
+
+
+
+
+
+
+
+/* quiz environment */
+
+.quizquestion {
+  /*    border-style:solid;
+      border-width:3px;
+      border-radius:5px; */
+  padding: 20px;
+  margin-bottom: 20px; }
+
+.quizanswer {
+  border: solid 3px;
+  border-radius: 8px;
+  padding: 20px;
+  /*  height: 150px; */
+  height: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: white; }
+
+.quizanswer.toggle {
+  background-color: lightgrey; }
+
+.quizwronganswer {
+  border-width: 4px;
+  border-color: red; }
+
+.quizrightanswer {
+  border-width: 6px;
+  border-color: green; }
+
+
+/* orderquiz environment */
+
+
+.orderquizanswer {
+  border: solid 3px;
+  border-radius: 8px;
+  padding: 20px;
+  margin-right: 10px;
+  margin-left:10px;
+  margin-bottom: 10px;
+  background-color: white;
+  cursor:move;}
+ 
+.orderquizanswer .empty {
+  background-color: lightgrey; }
+ 
+.orderquizfeedback .hidden {
+  display: none;
+}
+  
+.orderquizresult .correct {
+  color: green;
+}
+ 
+.orderquizresult .wrong {
+  color: red;
+}
+
+
+/* paraquiz */
+
+.inlineblock {
+  min-width: 100px;
+  display: inline-block;
+  padding: 10px;
+  margin: 10px; }
+ 
+.inlineblock::after {
+  content: "\00A0";
+}
+ 
+/* hack der fjerner en div med en padding 20px box der kommer efter man parser text */
+.orderquizanswer div {
+  display: none;
+}
+
+.Sage {
+  padding-top: 10px;
+  font-weight: bold;
+  counter-increment: envco; }
+
+.Sage::before {
+  content: "(" counter(chapter) "." counter(envco) ") "; }
+
+
+/* Fodnoter */
+
+.footnote {
+    color: #ca0020;
+}
+
+.footnote .footnotetext {
+    z-index: -1;
+    opacity: 0;
+    position: fixed;
+    left: 15px;
+    bottom: 20px;
+    margin-left: 0px;
+    margin-right: 18px;
+    padding: 7px 10px;
+    border-radius: 4px;
+    border:1px solid #DCA;
+    color: black;
+    font-size: 15px;
+    background-color: #FEF6BB;
+}
+
+.footnote:hover .footnotetext{
+    z-index: 9;
+    opacity: 1;
+}
+
+
+/* Vis billeder ved hover (i editor) */
+
+.imgnote {
+    cursor: crosshair;
+}
+
+.imgnote .imgnotetext {
+    z-index: -1;
+    opacity: 0;
+    position: fixed;
+    left: 15px;
+    bottom: 20px;
+    margin-left: 0px;
+    margin-right: 18px;
+    padding: 14px 20px;
+    border-radius: 4px;
+    border:2px solid #DCA;
+    color: black;
+}
+
+.imgnote:hover .imgnotetext{
+    z-index: 9;
+    opacity: 1;
+}
+
+
+
+.linkbutton {
+  padding-top: 10px;
+  font-weight: bold;
+  counter-increment: envco; }
+
+.linkbutton::before {
+  content: "(" counter(chapter) "." counter(envco) ") "; }
+
+
+.downtick{
+    color:black;
+}
+
+.btn {
+  font-size: 18px;
+  /* background-color: #d7cec7; 
+  background-color: #d3d3d3;*/ }
+
+.collapse {
+    padding-right: 20px;
+    padding-bottom: 10px;
+} 
+
+.tocicon {
+  font-size: 25px;
+  position: fixed;
+  left: 0;
+  padding-left: 5px;
+  padding-top: 10px;
+  padding-bottom: 20px; }
+
+.openbs {
+  font-size: 20x;
+/*  position: fixed;
+  left: 25; 
+  color: #76323f; */
+  background-color: white;
+  border: none; }
+ 
+.closebs {
+  font-size: 20px;
+/*  position: fixed;
+  left: 50; 
+  color: #76323f; */
+  background-color: white;
+  border: none; }
+
+.ltxlabel {
+    font-size: 25px;
+    color:red;
+    cursor:pointer;
+}
+
+h1 {
+  font-size: 45px;
+  counter-reset: section;
+  padding-bottom: 30px;
+  padding-top: 20px; }
+
+h2 {
+  font-size: 30px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  counter-reset: subsection; }
+
+
+ol {
+  margin-left: 0;
+  padding-left: 0;
+  padding-top: 5px; }
+
+ol > li {
+  position: relative;
+  margin: 0 0 6px 2em;
+  padding: 4px 8px;
+}
+
+ol.alpha {
+    list-style-type: lower-alpha;
+}
+
+ol.greek {
+    list-style-type: lower-greek;
+}
+
+ol.number {
+    list-style-type: decimal;
+}
+
+ol.lowerroman {
+    list-style-type: lower-roman;
+}
+
+ol.upperroman {
+    list-style-type: upper-roman;
+}
+
+h1, h2, h3 {
+  color: #76323f; }
+
+figcaption {
+    text-align: left;
+    font-size: 16px;
+}
+
+img {
+    display: inline-block;
+    margin: auto;
+    padding: 30px; 
+    max-width: 100%;
+    height: auto;
+    align: middle;
+}
+
+.centerimg {
+    text-align: center;
+}   
+
+audio {
+  background: #95B9C7;
+  float: right;
+  width: 10%; }
+
+body {
+  background-color: white; }
+
+.collapse {
+  border-left: thick solid #d3d3d3;
+  font-style: normal;
+  padding-left: 20px;
+  margin-bottom: 20px; }
+
+.modal-dialog {
+  width: 90%; }
+
+/* .mark {background-color: #FFFFCC;} */
+.indent {
+  text-indent: 25px; }
+
+
+.katex-render {
+  font-size: 85%; }
+
+.katex-render .katex-display {
+  position: relative; }
+
+.katex-render .katex-display .katex .eqno {
+  display: inline-block;
+  position: absolute;
+  right: 0; }
+
+.katex-render .katex-display .accent .accent-body.accent-vec > span {
+  left: 0.5em !important; }
+
+h1, h2, h3, h4, h5, h6 { font-family: "PT Serif Caption", sans-serif; font-weight: normal; color: #76323f; letter-spacing: normal; }
+
+
+
+
+
+
+.container {
+    max-width: 24cm;
+}
+
+
+/*********** Sidebar */
+
+.leftmenu {
+    padding-top: 20px;
+}
+
+.sidenav {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  padding-top: 0px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  /* color: #818181; */
+  display: block;
+}
+
+ul {
+    list-style-type: none;
+    text-align: left;
+    font-size: 16px;
+    /* line-height: 90%; */
+    padding-left: 0px;
+    /* padding-left: 15px; */
+    }
+
+li a {
+    color:black;
+}
+
+.main {
+  padding: 20px 10px;
+}
+
+/*
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+*/
+
+.normalwidth {
+    width: 10%;
+}
+
+.normalmargin {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.extendedwidth {
+    width: 20%;
+    }
+
+.extendedmargin {
+    margin-left: 20%;
+    margin-right: 10%
+}
+
+/*************************/
+
+video { 
+    display: block; 
+    margin: 0 auto;  
+}  
+
+
+body {
+    font-family: "PT Serif", serif;
+    letter-spacing: 0.02em;
+    font-size:20px;
+    text-align: justify;
+}
+ 

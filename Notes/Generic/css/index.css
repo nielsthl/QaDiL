@@ -1,0 +1,120 @@
+    h1, h2, h3 {color: #76323f;}
+
+    h1 {
+    font-size:50px;
+    text-align: center;
+    }
+
+    h2 {
+    font-size:25px;
+    color: black;
+    text-align: center;
+    }
+
+    body {
+    
+    font-family: 'Century Schoolbook L';
+    font-size: 18px;
+    line-height: 1.5;
+    }
+
+    img {
+    display:block;
+    margin:auto;
+    padding:30px;
+    max-width:100%;
+    height: auto;
+    align:middle;
+    }
+
+
+    .center {
+    margin: auto;
+    width: 40%;
+    padding: 10px;
+    }
+
+    .openbs {
+	display:none;
+    }
+
+    .closebs {
+	display: none;
+    }
+
+
+    .collapse {
+	border-left: thick solid #d3d3d3;
+	font-style: normal;
+	padding-left: 20px;
+	margin-bottom: 20px;
+    }
+
+    
+/*********** Sidebar */
+
+.downtick{
+    color:black;
+}
+    
+.sidenav {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  padding-top: 0px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  /* color: #818181; */
+  display: block;
+}
+
+ul {
+    list-style-type: none;
+    text-align: left;
+    font-size: 16px;
+    /* line-height: 90%; */
+    padding-left: 0px;
+    /* padding-left: 15px; */
+    }
+
+li a {
+    color:black;
+}
+
+.main {
+  padding: 20px 10px;
+}
+
+/*
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+*/
+
+.normalwidth {
+    width: 10%;
+}
+
+.normalmargin {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.extendedwidth {
+    width: 20%;
+    }
+
+.extendedmargin {
+    margin-left: 20%;
+    margin-right: 10%
+}
+
+/*************************/

@@ -1,0 +1,1719 @@
+\documentclass{article}
+
+\include{stddefs}
+\include{genericdefs}
+
+\newcommand{\red}[1]{\textcolor{red}{\textbf{#1}}}
+\newcommand{\green}[1]{\textcolor{green}{\textbf{#1}}}
+
+\begin{document}
+
+\chapterno{1}
+
+\chapter{The language of mathematics}
+
+We need to introduce some formal notation to be able to talk clearly about mathematics and also in a reasonable way 
+formulate mathematical models of the real world. In modern mathematics the 
+concept of a set is crucial. It is \url{a bit tricky}{https://en.wikipedia.org/wiki/Set_theory\#Axiomatic_set_theory} to define this precisely.
+We will go on and define the basic concepts of what is called 
+\url{naive set theory}{https://en.wikipedia.org/wiki/Naive_set_theory}.
+
+Mathematics is hard and there are a lot of relevant and good questions
+to ask. For example, I do not agree that
+% \url{\includegraphics[width="50\%"]{tweetmath.png}}{https://twitter.com/aIeturner/status/1298372968838508546}
+\includegraphics[width="50\%"]{tweetmath.png}
+is \emph{the dumbest video ive ever seen}. In learning mathematics,
+there should be no place for arrogance and putting other people down.
+
+\begin{hideinbutton}{Emergency access}
+  For some reason the Twitter account of Mohammed El Mocro %(in the link above)
+  has been suspended. Here is a salvaged copy of the original TikTok video that went viral.
+
+
+\youtube{SqTtWIiS42o}
+\end{hideinbutton}
+
+\section{Computer algebra}
+
+We will use the computer algebra system
+\url{Sage}{http://www.sagemath.org/} in exploring and experimenting
+with mathematics. This means that you will have to write small
+commands and code snippets. Sage is built on top of the very wide
+spread language
+\url{Python}{https://en.wikipedia.org/wiki/Python_(programming_language)}
+and you can in fact enter \footnote{Python code}{One may also enter code in several other languages, but I have so far only set the interface up for Sage and Python} in
+the Sage input windows in this text. Below is an example of a basic
+graphics command in Sage.  Push the Compute button to evaluate.
+
+
+\begin{sage}
+plot(sin(x) + cos(2*x), (x, 0, 2*pi))
+\end{sage}
+
+
+\beginshex
+Did you notice that you can edit and enter new commands in the Sage window?
+Do the following problems using Sage based on the \url{Sage guided tour}{http://doc.sagemath.org/html/en/tutorial/tour.html}. 
+
+\begin{enumerate}[(i)]
+\item Consider $f(x) = x \sin(1/x)$. Plot the graph of $f$ from $0$ to $0.1$. Computing $f(0)$ does not make sense. Do you
+  see a way of assigning a natural value to $f(0)$ using the graph?
+\item Find an approximate solution with four decimals to the equation $\cos(x) = x$.
+  
+  \begin{hint}[showhide]
+    This is an example of an equation, that can only be solved numerically.
+    Try first plotting the graph of $f(x) = x - \cos(x)$ from $0$ to $1$. Then use a
+    suitable function from the Sage guide.
+    \end{hint}
+\item Compute $\pi$ with $100$ decimals.
+\end{enumerate}
+  
+\endshex
+
+
+\section{Objects or elements and the symbols $=$ and $\neq$}
+
+Mathematics can be broadly viewed as handling objects precisely
+according to a specific system of rules. The first element
+of precision is in distinguishing the objects and deciding when
+they are the same. This calls for notation. If two objects
+$x$ and $y$ are the same, we write $x = y$. If they are different
+we write $x\neq y$.
+
+You may laugh here, but identifying objects is really one of the fundamental tasks of mathematics.
+It is not always that easy. Even though objects appear different they are the same as
+in, for example
+$$
+\frac{105}{189} = \frac{35}{63}\qquad\text{and}\qquad \sin\left(\frac{\pi}{2}\right) = 1.
+$$
+The first example above is an identity of fractions (rational numbers). The second is
+an identity, which calls for knowledge of the sine function and real numbers. Each of these
+identities calls for some rather advanced mathematics.
+
+
+\beginshex\label{sagecompex1}
+
+\begin{sage}
+var('a b')
+e = (a+b)^2
+e.expand()
+\end{sage}
+
+Use the Sage window above to reason 
+about equality in the quiz below. In each case describe the objects i.e.,
+are they numbers, symbols, etc.? Also, please check your computations
+by hand with the old fashioned paper and pencil, especially $(a+b)(a-b)$.
+
+\begin{quiz}
+\question
+Click on the right equalities below.
+\answer{T}
+$$a + b - 2 b = a - b$$
+\answer{F}
+$$(a+b)^2 = a^2 + b^2$$
+\answer{T}
+$$(a + b)(a - b) = a^2 - b^2$$
+\answer{T}
+$$(a + b)^2 = a^2 + 2 a b +  b^2$$
+\answer{F}
+$$(a+b)^3 = a^3 + 2 a^2 b + 2 a b^2 + b^3$$
+\answer{F}
+$$\frac{3}{8} = \frac{5}{13}$$ 
+\answer{F}
+$$
+\pi = \frac{22}{7}
+$$
+\answer{T}
+$$
+\cos^2(\pi) + \sin^2(\pi) = 1
+$$
+\end{quiz}
+\endshex
+
+\beginshex
+You know that $(a+ b)^2 = a^2 + 2 a b + b^2$. Use Sage to find a similar identity
+for $(a + b)^4$.
+
+\begin{hint}[showhide]
+  Go back and look at (the beginning of) Exercise \ref{sagecompex1}.
+\end{hint}
+\endshex
+
+
+
+\section{Sets}
+
+A set is (informally) a collection of distinct objects or \emph{elements}. 
+
+\begin{equation*}[emph]
+  \text{Two sets are equal if they contain the same elements.}
+\end{equation*}
+
+An example of a set could be 
+the set $\{1,2,3\}$ of natural numbers between $0$ and $4$. Notice that we use the symbol
+"$\{$" to start the listing of elements in a set and the symbol "$\}$" to denote the end of the listing.
+Notice also that (by our definition of equality between sets), the order of the elements in the listing does not matter i.e.,
+$$
+\{1, 2, 3\} = \{2, 3, 1\}.
+$$
+We are also not allowing duplicates like for
+example in the listing $\{1, 2, 2, 3, 3, 3\}$ (such a thing is called a \url{multiset}{https://en.m.wikipedia.org/wiki/Multiset}).
+
+An example of a set not involving numbers could be the set of letters 
+$$
+S=\{A, n, e, x, a, m, p, l, c, o, u, d, b, t, h, s, r, i\}
+$$ 
+used in this sentence. The number of elements in a set $S$ is called the \emph{cardinality} of the set.
+We will denote it by $|S|$.
+
+\beginshex
+Give a precise reason as to why the two sets $\{1, 2, 3\}$ and $\{1, 2, 4\}$ are not equal.
+Is it possible for a set with $5$ elements to be equal to a set with $7$ elements?
+\endshex
+
+
+
+Sets may be explored using Sage. This is illustrated in the Sage snippet below.
+
+\begin{code}
+X = Set([1, 2, 3])
+Y = Set([2, 3, 1])
+print("X=Y is ", X==Y)
+
+S = Set(['A','n','e','x','a','m','p','l','c','o','u','d','b','t','h','s','r','i'])
+print("S = ", S) 
+print("The number of elements in S is |S|=", S.cardinality())
+\end{code}
+
+
+\subsection{The empty set}
+
+There is a unique set containing no or zero elements. This set is called the empty set and
+is denoted $\emptyset$ i.e.,
+$$
+\emptyset = \{\}\qquad\text{and}\qquad |\emptyset| = 0.
+$$
+The empty set and its cardinality may be explored using the Sage code below.
+
+\begin{code}
+emptyset = Set([])
+print(emptyset.cardinality())
+\end{code}
+
+
+
+
+\subsection{Sets of numbers}
+
+A set could also be the natural numbers (yes, I want $0$ as a natural number:
+$0$ is very natural, although it came late \url{historically}{https://en.wikipedia.org/wiki/0})
+$$
+\NN = \{0, 1, 2, 3, \dots\},
+$$
+or the set of integers
+$$
+\ZZ = \{\dots, -3, -2, -1, 0, 1, 2, 3, \dots\}.
+$$
+These sets are called infinite, since they contain infinitely many elements. Even though
+the natural numbers seem as easy as one, two three, they contain wonderful and deep
+mathematical mysteries, such as the nature and distribution of the prime numbers
+$2, 3, 5, 7, 11, 13, 17, \dots$. Also please respect, that the \url{negative numbers}{https://en.m.wikipedia.org/wiki/Negative_number} like
+$-3, -1\in \ZZ$ have caused confusion for centuries.
+ 
+We also have
+the set $\QQ$ of rational numbers (fractions) and the set
+$\RR$ of real numbers. The real numbers
+contains all the possible numbers that we encounter in 
+this course.
+
+We will not define the
+arithmetic operations (like addition and multiplication) on $\ZZ, \QQ$
+and $\RR$ 
+formally. I will assume that you know how to add and multiply fractions,
+and that you \textbf{do not make mistakes like}
+$$
+\color{red}
+\frac{1}{2} + \frac{2}{3} = \frac{1+2}{2+3}=\frac{3}{5}.
+$$
+Similarly, I will assume that you know that a rational number stays the
+same, when the numerator and denominator is multiplied by the same non-zero 
+integer. For example,
+$$
+\frac{1}{2} = \frac{3}{6}\qquad\text{and}\qquad \frac{2}{3} = \frac{4}{6}.
+$$
+In fact, 
+$$
+\frac{1}{2} + \frac{2}{3} = \frac{3}{6} + \frac{4}{6} = \frac{3 + 4}{6} = \frac{7}{6}.
+$$
+The computation above says that it is straightforward to add pizza slices of the
+same size (one sixth), but that you need to think a bit when adding one half pizza slice and
+two pizza slices of size one third.
+
+
+
+
+\begin{quizexercise}[showhide]
+  \begin{quiz}
+\question
+Click on the right equalities below. Do not use Sage (or any computer)!
+\answer{F}
+$$
+\frac{1}{5} + \frac{1}{7} = \frac{1}{35}
+$$
+\answer{T}
+$$
+\frac{3}{7} + \frac{4}{7} = 1
+$$
+\answer{T}
+$$
+\frac{2}{3} + \frac{3}{2} - 2 = \frac{1}{6}
+$$
+\answer{F}
+$$
+\frac{1}{3} + 2 = \frac{8}{3}.
+$$
+\end{quiz}
+\end{quizexercise}
+
+\subsection{The symbols $\in$ and $\notin$}
+
+The symbol $\in$ is ubiquitous in set theory (and mathematics). 
+It means \emph{belongs to} or \emph{is an element of} as in 
+$x\in A$, where $x$ is an element and $A$ is a set. The symbol
+$\notin$ means is \textbf{not} an element of as in
+$x\notin A$ meaning $x$ is not an element of $A$.
+
+
+\begin{quizexercise}[showhide]
+\begin{paraquiz}
+  \question
+  \box$\in$\box, but \box$\not\in$\box. This exercise actually has \box possible correct solutions
+if $\{1, 2, 3\}$ is in the second empty box and $\{4, 5, 6\}$ in the fourth empty box.
+  \answer
+  $\{1, 2, 3\}$
+  \answer
+  $\{4, 5, 6\}$
+  \answer
+  $0$
+  \answer
+  $1$
+  \answer
+  $3$
+  \answer
+  $6$
+  \answer
+  $7$
+
+  \case{(is 41326)}{T} 
+  \green{Correct!}
+  \case{(is 41526)}{T} 
+  \green{Correct!}
+  \case{(is 41726)}{T} 
+  \green{Correct!}
+  \case{(is 51326)}{T} 
+  \green{Correct!}
+  \case{(is 51426)}{T} 
+  \green{Correct!}
+  \case{(is 51726)}{T} 
+  \green{Correct!}
+
+  \default
+  \red{Nope. Try again!}
+\end{paraquiz}
+\end{quizexercise}
+
+
+Belongs to ($\in$) is straightforward in Sage:
+
+\begin{code}
+S = Set([1,2,3])
+print("S = ", S)
+print("The element 1 is in S: ", 1 in S)
+print("The element 4 is in S: ", 4 in S)
+\end{code}
+
+
+
+\subsection{Subsets and the symbols $\subseteq$ and $\not\subseteq$}
+
+If $A$ and $B$ are sets, then $A\subseteq B$ means that
+every element of $A$ is also an element of $B$. In this case we say
+that \emph{$A$ is a subset of $B$}.
+
+We have
+for example that 
+$$
+\NN \subseteq \ZZ.
+$$
+What does $A\not\subseteq B$ mean? Here we have to be a little
+careful. We want this notation to mean that $A$ is \textbf{not} a
+subset of $B$. In order for $A\subseteq B$ to be
+false, there must exist $x\in A$, such that $x\notin B$. This
+is the meaning of $A\not\subseteq B$. For example, 
+$$
+\ZZ\not\subseteq \NN,
+$$
+since $-1\in \ZZ$ and $-1\notin \NN$.
+
+\begin{quizexercise}[showhide]
+\begin{paraquiz}
+  \question
+  The set \box is not a subset of $A=$\box, simply because \box does not belong to $A$.
+  This exercise actually has \box possible correct solutions.
+  \answer
+  $\{1, 2, 3\}$
+  \answer
+  $\{-1, 1, 2, 3, 4\}$
+  \answer
+  $\{-1, 0, 1, 2, 4\}$
+  \answer
+  $3$
+  \answer
+  $-1$
+  \answer
+  $5$
+  \answer
+  $6$
+  \answer
+  $0$
+  \case{(is 1347)}{T} %13(3)
+  \green{Correct!}
+  \case{(is 2157)}{T} %21(-1)
+  \green{Correct!}
+  \case{(is 2347)}{T} %23(3)
+  \green{Correct!}
+  \case{(is 3287)}{T} %32(0)
+  \green{Correct!}
+  \case{(is 3157)}{T} %31 (-1)
+  \green{Correct!}
+  \case{(is 3187)}{T} %31 (0)
+  \green{Correct!}
+  \default
+  \red{Nope. Try again!}
+\end{paraquiz}
+\end{quizexercise}
+
+
+
+Below Sage will list all subsets of the set $\{1, 2, 3\}$. Before pressing
+the Compute button, try to write them down on your own.
+
+\begin{sage}
+X = Set([1,2,3])
+list(X.subsets())
+\end{sage}
+
+
+\begin{quizexercise}[showhide]
+\begin{paraquiz}
+  \question
+  The empty set has \box elements. A set with \box elements has \box subsets. In general a set with
+  $n$ elements has \box subsets.
+  \answer
+  $1$
+  \answer
+  $0$
+  \answer
+  $5$
+  \answer
+  $25$
+  \answer
+  $32$
+  \answer
+  $n^2$
+  \answer
+  $2^n$
+  \case{(is 2357)}{T}
+  \green{Correct!}
+  \default
+  \red{Nope. Try again!}
+\end{paraquiz}
+\end{quizexercise}
+
+
+It turns out that the empty set $\emptyset$ is a subset of any set. Does this
+make sense?
+
+\subsection{Intersections, unions and the symbols $\cap,\,\, \cup$ and $\setminus$}
+
+Suppose that we have two sets $A$ and $B$. Then the \emph{intersection} $A\cap B$ is the
+set consisting of the elements in both $A$ and $B$. This is illustrated in the
+socalled \url{Venn diagram}{https://en.wikipedia.org/wiki/Venn_diagram} below.
+
+\includegraphics{vennintersection.svg}
+
+The \emph{union} $A\cup B$ is the
+set consisting of the elements in $A$ or $B$. To be more precise, an element is in
+$A\cup B$ if it is in $A$ or in $B$ (or in both of them):
+
+\includegraphics{vennunion.svg}
+
+Lastly, the
+difference $A\setminus B$ (between $A$ and $B$) consists of the elements
+in $A$, the are not contained in $B$:
+
+\includegraphics{venndifference.svg}
+
+You should experiment using the Sage window below to get a feeling for these three operations.
+
+\begin{sage}
+A = Set([1, 2, 3, 4, 5, 6, 7, 8, 9])
+B = Set([7, 8, 9, 10, 11, 12])
+print("A =", A)
+print("B =", B)
+print("The intersection of A and B is ", A.intersection(B))
+print("The union of A and B is ", A.union(B))
+print("The difference between A and B is ", A.difference(B))
+\end{sage}
+
+\beginshex
+Given two sets $A$ and $B$, is it true that
+$A \cap B = B \cap A$ and $A\cup B = B\cup A$?
+
+What about $A\setminus B = B\setminus A$?
+
+Suppose that $A$ and $B$ are two finite sets. Is it true that
+$$
+|A\setminus B| = |A| - |B|?
+$$
+What about
+$$
+|A\cup B| = |A| + |B|?
+$$
+Seriously, both formulas are wrong. Can you come up with the correct
+version of the formula for $|A \cup B|$?
+
+Use your correct formula to find a formula for
+$$
+|A\cup B \cup C|
+$$
+viewing $A\cup B$ as the first set and $C$ as the second set. Here you need
+the formula
+$$
+(A\cup B)\cap C = (A\cap C) \cup (B\cap C).
+$$
+Why is this formula true?
+\endshex
+
+\beginshex
+There is one more operation called the symmetric difference between two sets $A$ and $B$. It is
+denoted $A\, \Delta\, B$. Experiment in the Sage window below to find out exactly what it does.
+Is it true that $A\, \Delta\, B = B\, \Delta\, A$?
+
+\begin{sage}
+A = Set([1,2,3,4])
+B = Set([4,5,6,7])
+print("A =", A)
+print("B =", B)
+print("The symmetric difference between A and B is ", A.symmetric_difference(B))
+\end{sage}
+\endshex
+
+\begin{hideinbutton}{CS test on sets}
+
+The following is an excerpt from the infamous \emph{Beredskabsprøve Datalogi}.
+
+\begin{quiz}
+\question
+Let $X$ and $Y$ denote sets. Which of the following are true?
+\answer{T}
+$X \cup X = X$
+\answer{T}
+$X\cap X = X$
+\answer{F}
+$X\setminus X = X$
+\answer{T}
+$X\subseteq X\cap X$
+\answer{T}
+$\emptyset \subseteq X$
+\answer{T}
+For some sets $X$ and $Y$ we can have
+$$
+X\cap Y = X\cup Y.
+$$
+\end{quiz}
+\end{hideinbutton}
+
+\subsection{Pairs, triples and tuples}
+
+Given two sets $A$ and $B$ we can form the new set $A\times B$,
+which is the set of pairs $(a, b)$, where $a\in A$ and
+$b\in B$. For example,
+$$
+\{1, 2\}\times \{1, 2, 3\} = 
+\{(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3)\}.
+$$
+The set $A\times B$ is also called the \url{Cartesian
+  product}{https://en.wikipedia.org/wiki/Cartesian_product} of $A$ and
+$B$.
+
+\beginshex
+Consider two pairs $(a, b)$ and $(c, d)$. What is a natural way of defining
+equality between these pairs i.e., $(a, b) = (c, d)$?
+\endshex
+
+
+\begin{sage}
+A = Set([1, 2])
+B = Set([1, 2, 3])
+C = cartesian_product([A, B])
+print("A =", A)
+print("B =", B)
+print("The cartesian product of A and B is ", list(C))
+\end{sage}
+
+There is no need to restrict ourselves to tuples. We might as well
+consider triples $A\times B\times C$ i.e., 
+the set of all $(a, b, c)$, where $A$, $B$ and $C$ are sets, or
+for that matter tuples
+$$
+(a_1, a_2, \dots, a_n)\in A_1\times A_2\times \cdots \times A_n
+$$
+of any length $n\in \NN$, where $a_1\in A_1, a_2\in A_2, 
+\dots, a_n\in A_n$. Based on the above example with tuples we have,
+\begin{align*}
+&\{0\}\times\{1, 2\}\times \{1, 2, 3\} = \\
+&\{(0, 1, 1), (0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 2), (0, 2, 3)\}.
+\end{align*}
+
+You may check this using the Sage snippet below.
+
+\begin{code}
+A = Set([0])
+B = Set([1, 2])
+C = Set([1, 2, 3])
+print("A =", A)
+print("B =", B)
+print("C =", C)
+D = cartesian_product([A, B, C])
+print("The cartesian product of A, B and C is ", list(D))
+\end{code}
+
+
+For a given set $A$ and $n\in \NN$ we define $n$-fold cartesian product of $A$ as
+$$
+A^n = \underbrace{A\times A\times \cdots \times A}_{n\text{ times}}.
+$$
+\begin{code}
+A = Set([1,2])
+n = 3
+B = cartesian_product([A]*n)
+print("A =", A)
+print("n =", n)
+print("The n-fold cartesian product of A is ", list(B))
+\end{code}
+
+\beginshex
+Let $A$ and $B$ be two sets. Is $A\times B = B \times A$?
+
+Let $X$ be any set. What is $\emptyset \times X$?
+
+Let $A, B, C$ and $D$ be four sets. Is
+$$
+(A\times B)\setminus (C\times D) = (A\setminus C)\times (B\setminus D)?
+$$
+\endshex
+
+
+
+\section{Ordering numbers}
+
+Let us be a little rigorous and introduce the (usual) ordering
+on our numbers with addition and multiplication using almost full blown
+mathematical formalities. First the formal definition for two
+integers $x, y\in \ZZ$:
+
+\begin{equation}[emph]\label{ordZ}
+x \leq y\qquad \text{ means that }\qquad y - x\in \NN
+\end{equation}
+
+
+Notice that $x = y$ implies that $x\leq y$ (and $y\leq x$).
+Along this line we also define $x < y$ if $x \leq y$ and $x\neq y$.
+
+\begin{quizexercise}[showhide]
+\begin{orderquiz}
+  \question
+  Assume that $x, y, z\in \ZZ$ and that $x \leq y$. Then drag and drop the
+  elements from the left to the right below to explain that
+  $x + z \leq y + z$.
+  \answer %1
+  By assumption $x\leq y$.
+  \answer %2
+  This means that $z - x + y\in \NN$
+  \answer %3
+  This means that $y - x\in \NN$
+  \answer %4
+  To show that $x + z \leq y + z$, we need to show that
+  $(y + z) - (x + z) \in \NN$.
+  \answer %5
+  But $(y + z) - (x + z) = y + z - x + z$. Therefore,
+  \answer %6
+  But $(y + z) - (x + z) = y + z - x - z = y - x$. Therefore,
+  \answer %7
+  $(y + z) - (x + z)\in \NN$, since
+  \answer %8
+  $y - x \in \NN$
+  \expected{6}
+
+  \case{(is 134678)}{T}
+  \green{Spot on, my friend.}
+
+  \case{(is 467813)}{T}
+  \green{This is right!}
+  
+  \case{(is 413678)}{T}
+  \green{This is right!}
+
+  \default
+  \red{Wrong order. Check the definition of $\leq$ in \eqref{ordZ} once more!}
+\end{orderquiz}
+\end{quizexercise}
+
+
+You can
+see that this definition agrees with our preconception that
+\begin{equation}\label{ordwrong}
+\cdots < -3 < -2 < -1 < 0 < 1 < 2 < \cdots
+\end{equation}
+
+\begin{exercise}[showhide]
+  To be precise, writing $\cdots < -3 < -2 < -1 < 0 < 1 < 2 < \cdots$ is nonsense, since $\leq$ is only defined for two integers in \eqref{ordZ}. How is one supposed to interpret $0 < 1 < 2$ for example? Go ahead and write \eqref{ordwrong} the
+  right way. Also, suppose \footnote{that}{As an example, this could be assuming $1 \leq 2$ and $2 \leq 5$ and then
+    arguing that $1\leq 5$.}
+  $$x \leq y\qquad\text{and}\qquad y\leq z
+  $$
+  for three integers $x, y, z\in \ZZ$. Argue
+  from the definition in \eqref{ordZ} that $x\leq z$.
+
+  How does Python/Sage interpret $-3 < -2 < -1< 0 < 1 < 2$? Find out using the Sage snippet below.
+  
+  \begin{code}
+print(-3 < -2 < -1 < 0 < 1 < 2)
+  \end{code}
+  
+  What about $1 < 5 > 3 < 4$? 
+\end{exercise}
+
+Notice that the integers has huge holes. Given two integers $a, b\in \ZZ$, such
+that $a < b$, we cannot always find an integer $c\in \ZZ$ in between $a$ and $b$:
+$$
+a < c < b.
+$$
+
+The rational numbers has the property that they do not have holes. We can
+always find an in between number such as $c$ above. But we need a precise way
+of comparing rational numbers. A way to explain precisely why for example
+$$
+\frac{2}{3}\,\, \leq \,\, \frac{5}{7}.
+$$
+Of course, you can enter the two numbers a on computer and see that
+$\frac{2}{3}$ is approximately $0.67$ and $\frac{5}{7}$
+is approximately $0.71$, but we aim for the mathematical
+precise definition.
+
+A
+rational number $\frac{p}{q}$ consists of a numerator $p\in \ZZ$ and a denominator
+$q\in \ZZ$ with $q > 0$. We already know the criterion for two rational numbers
+$\frac{p}{q}$ and $\frac{p'}{q'}$
+to be \footnote{equal}{Technically speaking we are defining a socalled \emph{equivalence relation} identifying the infinitely many ways of writing a rational number into one.}:
+
+\begin{equation*}[emph]
+\frac{p}{q}\, =\, \frac{p'}{q'}\qquad \text{ means that }\qquad p q' = p' q\qquad (\text{in }\ZZ).
+\end{equation*}
+
+
+We wish to compare the two rational numbers $\frac{p}{q}$ and $\frac{p'}{q'}$ deciding
+precisely how they are ordered:
+
+\begin{equation}[emph]
+\frac{p}{q}\, \leq\, \frac{p'}{q'}\qquad \text{ means that }\qquad p q' \leq p' q\qquad (\text{in }\ZZ).
+\end{equation}
+
+
+As for the integers, we also define $x < y$ if $x \leq y$ and $x\neq y$ for
+two rational numbers $x$ and $y$.
+
+Using this definition, you can check that $\frac{2}{3} \leq \frac{5}{7}$, since
+$$
+2\cdot 7 < 3 \cdot 5.
+$$
+ 
+An easy, but surprising, 
+way of finding a rational number strictly between these two is
+adding their numerators and denominators:
+$$
+\frac{2}{3} < \frac{2 + 5}{3 + 7} < \frac{5}{7}.
+$$
+
+We wil try to explain the first inequality in mathematical general terms going through a
+rather formal proof consisting of five steps. These steps are
+given in the quiz below. Your task is drag from the left and drop them to the right in an order, 
+so that the proof makes sense. 
+
+After that you are supposed, on your own, to write down a precise proof of
+the second inequality.
+
+\begin{quizexercise}[showhide]
+\begin{orderquiz}
+  \question
+  Order the arguments below so that they constitute a coherent explanation of the
+  statement that if
+  $$
+  \frac{a}{b} < \frac{c}{d},
+  $$
+  then
+  $$
+  \frac{a}{b} < \frac{a + c}{b + d}
+  $$
+
+  
+  \answer %2
+  By definition this means that $a d < b c$.
+
+  
+  
+ \answer %1
+  We are assuming that $\frac{a}{b} < \frac{c}{d}$. 
+
+  \answer %4
+  For integers $x, y, z$ we know that the rule
+  $
+  x ( y + z) = x y + x z
+  $
+  holds. Therefore
+  \answer %5
+  we need to show that $a b + c d < b a + b c$.
+
+  
+  \answer %6
+  Since $a b = b a$ and $a b + a d < a b + b c$ is a consequence of $a d < b c$, we are
+  done if we know this is true.
+  \answer %7
+  However, this is a consequence of our assumption $\frac{a}{b} < \frac{c}{d}$.
+
+\answer %3
+  To show that
+  $
+  \frac{a}{b} < \frac{a+c}{b + d},
+  $
+  we need to argue that $a (b + d) < b (a + c)$.
+
+  
+  \answer
+
+  we need to show that $a b + a d < b a + b c$.
+  
+  \expected{5}
+
+  \case{(is 73856)}{T}
+  \green{Spot on, my friend!}
+
+  \case{(contains 4)}{F}
+  \red{You have not applied the formula for expanding $x(y + z)$ correctly.}
+
+  \default
+  \red{Wrong order.}
+
+\end{orderquiz}
+\end{quizexercise}
+
+
+
+
+\beginshex
+Similarly to the quiz above, assume that  
+$$
+  \frac{a}{b} < \frac{c}{d}.
+  $$
+  Write down a precise argument showing that
+  $$
+  \frac{a + c}{b + d} < \frac{c}{d}.
+  $$
+  You may seek inspiration in Video \ref{Video:proofexample} for
+  how to mix math and words (even though
+  it is further ahead).
+  \endshex
+
+  
+  
+
+\beginshex
+On \url{Twitter}{https://twitter.com/Ramangupta4/status/1162999733142482945}, Raman Gupta posted the note below
+
+\includegraphics[width="50\%"]{tweet.jpg}
+
+For a natural number $m\in \NN$,
+$$
+m! = m (m-1) (m-2)\cdot \dots \cdot 2\cdot 1. 
+$$
+For example, $3! = 6$ and $5! = 120$. What is the answer for the
+question in the note?
+\endshex
+
+The exercise below shows that our trick for finding rational numbers
+in between two given rational numbers can be made into a machine for
+generating all positive rational numbers!
+
+\beginshex
+Can you spot the system in the fractions in the diagram below?
+\includegraphics{SternBrocotTree.svg}
+Once you see the system, extend the diagram with the next level downwards. Is every
+positive fraction present in this diagram if one keeps adding levels?
+
+\begin{hint}[showhide]
+Suppose that
+$$
+\frac{p}{q} < \frac{r}{s}
+$$
+and $q r - s p = 1$. Then for
+$$
+\frac{p}{q} <  \frac{p+r}{q+s} < \frac{r}{s},
+$$
+we have $q (p+r) - (q+s) p = 1$ and $(q+s) r - (p + r) s = 1$. If $\frac{a}{b}$ is 
+a positive fraction, such that
+$$
+\frac{p}{q} <  \frac{a}{b} < \frac{r}{s},
+$$
+show that 
+$$
+a + b = (r+s)(qa−bp)+(p+q)(br−as)\geq p+q+r+s.
+$$
+\end{hint}
+\endshex
+
+
+\subsection{Subsets of numbers and first elements}\label{subsecfirst}
+
+In a set equipped with an order, it is intuitively clear what a first element should be. For example,
+the natural numbers $\NN$ has $0$ as its first element. On the other hand the set $\ZZ$ of
+integers does not have a first element (it is ``infinite to the left'').
+
+In fact every non-empty subset $S\subseteq \NN$ has
+a first element. This follows from a rather special property of $\NN$: there
+can be only finitely many natural numbers smaller than a given one. This is
+not true for $\ZZ$. Here there are infinitely many integers smaller than
+any integer.
+
+\beginshex
+Consider the subset $S$ of $\QQ$ consisting of positive fractions i.e., rational numbers  $>0$.
+Does this subset have a first element?
+\endshex
+
+
+
+
+\section{Propositional logic}
+
+We have seen quite a few mathematical statements that ended up 
+being true or false. Such statements are called \emph{propositions}.
+Here are two examples of propositions usings sets (in Sage):
+
+\begin{sage}
+print(1 in Set([1,2,3]))
+A = Set([1, 2, 3])
+B = Set([2, 3, 4])
+print(A.intersection(B) == Set([2, 3])) 
+\end{sage}
+
+\beginshex
+What exactly are the two propositions in the above Sage window written
+up in mathematical terminology? Notice that the symbol == is
+a programming construct. It is not used in mathematics notation.
+\endshex
+
+Propositions can be combined into
+new (compound) propositions. Take for example the propositions
+
+\begin{align*}
+&p: \text{it rains}\\
+&q: \text{it is cloudy}.
+\end{align*}
+  
+  Then ($p$ and $q$) is a perfectly good
+  new proposition reading \emph{it rains and it is cloudy}. The same goes for (if $p$ then $q$), which reads
+  \emph{if it rains then it is cloudy}. The proposition (if $q$ then $p$) reads \emph{if it is cloudy then
+    it rains}. This proposition is (clearly) false.
+
+
+We need some notation to describe these compound propositions:
+
+\begin{equation*}
+\begin{array}{ll}
+p \land q\qquad\qquad & \qquad\qquad p \text{ and } q\\
+\\
+p \lor q\qquad\qquad & \qquad\qquad p \text{ or } q\\
+\\
+p\implies q\qquad\qquad & \qquad\qquad \text{if } p \text{ then } q\\
+\\
+\neg p\qquad\qquad & \qquad\qquad \text{not } p
+\end{array}
+\end{equation*}
+
+The compound propositions are either true($t$) or false ($f$) depending on
+$p$ and $q$. The dependencies are displayed in the \emph{truth tables} below.
+
+\begin{equation*}[emph]
+\def\arraystretch{1.2}
+      \begin{array}{c|c|c}
+        p & q  & p\land q  \\
+        \hline 
+        t & t  & t    \\
+        t & f & f\\
+        f & t & f\\
+        f & f & f
+      \end{array}\qquad
+      \begin{array}{c|c|c}
+        p & q  & p\lor q  \\
+        \hline
+        t & t  & t    \\
+        t & f & t\\
+        f & t & t\\
+        f & f & f
+      \end{array}
+      \qquad
+      \begin{array}{c|c|c}
+        p & q  & p\implies q  \\
+        \hline
+        t & t  & t    \\
+        t & f & f\\
+        f & t & t\\
+        f & f & t
+      \end{array}\qquad
+      \begin{array}{c|c}
+        p & \neg p \\
+        \hline
+        t & f\\
+        f & t
+      \end{array}
+  \end{equation*}
+
+
+The tables for the compound propositions $p\land q, p\lor q$ and also
+$\neg p$ are not too hard to grasp. The table for $p\implies q$ 
+raises a few more questions. Why is $f\implies t$ true?
+I will not go into this, but just point out that there are
+many explanations available online and, 
+perhaps more importantly, refer you to the exercise below.
+
+
+
+\beginshex
+Suppose that we are presented with four cards
+\begin{equation}\label{cards}
+\boxed{3}\qquad \fcolorbox{black}{red}{\phantom{3}}
+\qquad\boxed{4}\qquad \fcolorbox{black}{blue}{\phantom{4}}
+\end{equation}
+with a (natural) number on the front and the color
+\textcolor{blue}{blue} or \textcolor{red}{red} on the back.
+In \eqref{cards}, the first and third cards are shown with their fronts facing up and
+the second and fourth cards are shown with their backs facing up.
+
+A claim (proposition) is made that if a card has an even number on the front, then it
+must have the color \textcolor{blue}{blue} on the back.
+
+Your task is to verify this for the cards above. Of course you can
+do this by turning all four cards, but is there a way of checking this
+by turning less than four cards?
+
+What if we add the claim, that if a card has the color 
+\textcolor{blue}{blue} on the back, then
+it must have an even number on the front?
+
+\begin{hint}[showhide]
+  Find two propositions $p$ and $q$ so that the claim reads
+  $p\implies q$.
+\end{hint}
+  
+\endshex
+
+
+\beginshex
+Explain why Python/Sage thinks that \footnote{the value}{Thanks to Gerth Brodal for pointing this out to me} of
+  $$
+  1 < 0 < 1/0
+  $$
+  is False! Notice that you are dividing one by zero in the last "integer" above.
+\endshex
+
+
+In the exercise below you will see for example that
+$p\implies q$ is the same as $\neg q \implies \neg p$.
+
+\beginshex\label{trutheq}
+Two propositions are considered the same ($=$) if they have the same truth table. Verify, by
+filling out and comparing truth tables, that
+\begin{enumerate}[(i)]
+\item
+$\neg (p \land q) = (\neg p) \lor (\neg q)$
+\item
+$\neg (p \lor q) = (\neg p) \land (\neg q)$
+\item
+$p \implies q = (\neg q) \implies (\neg p)$
+\item
+$p \implies q = (\neg p)\lor q$
+\end{enumerate}
+\endshex
+
+\beginshex
+Can you use the setup up in Exercise \ref{trutheq} to verify that
+$$
+p\land (q \lor r) = (p\land q) \lor (p \land r)
+$$
+for three propositions $p, q$ and $r$? What about
+$
+p\lor (q \land r)?
+$
+\endshex
+
+The notation $p \iff q$ is used frequently. It means that both
+$p\implies q$ and $q\implies p$ are true i.e.,
+$$
+(p\implies q) \land (q\implies p).
+$$
+
+% \subsection{Predicates with variables}
+
+% In mathematics it is natural to work with propositions with variables, such as $x > 0$. By itself
+% the expression $x>0$ is hopelessly imprecise. We need to specify which numbers we wish to compare:
+% natural numbers, rational numbers, $\dots$ i.e., what does $>$ really mean? Once this is done,
+% we can substitute a number for $x$ and only then do we get a predicate!
+
+% A precise way of writing, could be: for $x\in \ZZ$ we consider $p(x) = x > 0$.
+
+% \subsection{Subsets defined using predicates}
+
+\subsection{The symbols $\exists, \forall$ and propositions with variables}
+
+In mathematics one usually reasons with propositions with variables.
+
+In order to have a variable $x$, one must first specify to which set
+$S$ the variable belongs. For example, the proposition $p(x)$ given by
+$$
+x^2 > 0,
+$$
+does not make sense if $x$ is taken from the set of letters in the
+English alphabet (not unless you give an interpretation of $x^2$,
+$>$ and $0$ in this set). However, if $x\in \ZZ$, then $p(x)$
+certainly makes sense. Whether $p(x)$ is true depends on $x$.
+
+
+For example, $p(0)$ is false, whereas $p(-1)$ is true. This leads us to
+the existential and universal quantifiers $\exists$ and $\forall$.
+The former reads \emph{there exists} and the latter \emph{for every}.
+
+For example, the proposition
+$$
+\exists x\in \ZZ: \neg p(x)
+$$
+is true and so is
+$$
+\forall x\in \ZZ\setminus\{0\}: p(x).
+$$
+Notice that the  symbol ":" above means \footnote{"such that"}{Therefore  
+$\exists x\in \ZZ: \neg p(x)$ reads "there exists $x$ in $\ZZ$, such that
+$\neg p(x)$ is true".}.
+
+Also, $\forall x\in \ZZ: p(x)$ is false, because
+$\exists x\in \ZZ: \neg p(x)$ is true. In general,
+$$
+\neg\left(\forall x\in S: p(x)\right) = \exists x\in S: \neg p(x).
+$$
+So we do not really need the quantifier $\forall$, when we have
+$\neg$ and $\exists$, but $\forall$ is convenient and used all
+the time.
+
+The quantifiers are important to learn and apply when expressing
+mathematical ideas. So is the use of propositions with variables
+in writing up subsets: if $S$ is a set, $x$ a variable taking values
+in $S$ and $p(x)$ a proposition (making sense in $S$), then
+$$
+\{x\in S \mid p(x)\}
+$$
+is the subset of the elements $x\in S$, such that $p(x)$ is true.
+
+For example, if $p(x) = x^2 > 0$, then
+$$
+\{x\in \ZZ \mid p(x)\} = \ZZ\setminus \{0\}.
+$$
+
+\begin{hideinbutton}{More from CS}
+
+The following is yet another excerpt from the infamous \emph{Beredskabsprøve Datalogi}.
+
+\begin{quiz}
+\question
+Which of the following are true?
+\answer{F}
+$\forall x\in \NN: x > 2$
+\answer{T}
+$\exists x\in \NN: x > 2$
+\answer{T}
+$\forall x\in \emptyset: x = 7$
+\answer{F}
+$\exists x\in \emptyset: x = 7$
+\end{quiz}
+\end{hideinbutton}
+
+
+\subsection{The use of implication ($\implies$) and bi-implication ($\iff$)}
+
+Usually $\implies$ and $\iff$ are applied to link propositions in a logical argument. An example
+is
+$$
+x \leq y \iff x + z \leq y + z
+$$
+for integers $x, y, z$. To be completely precise, I should here write
+$$
+\forall x, y, z\in \ZZ: x \leq y \iff x + z \leq y + z,
+$$
+but one often writes $\forall$ with words as for example \emph{for integers $x, y, z$}.
+
+
+Here $x \leq y\implies x + z \leq y + z$ is true and similarly
+$x + z \leq y + z \implies x \leq y$ (by using the definition (see \eqref{ordZ}) of $\leq$ in $\ZZ$). So the
+use of $\iff$ is valid.
+
+However, for $x \geq 0 \implies x^2 \geq 0$ we cannot link the two propositions by $\iff$,
+simply because $x^2 \geq 0 \implies x \geq 0$ is false.
+
+
+\section{What is a mathematical proof?}
+
+
+Most professional mathematicians rarely think about the precise
+definition of a proof. During many years of training they have
+assimilated knowledge by experience. Therefore many proofs
+seem born out of witchcraft containing several magical
+devices.
+
+However, many proofs appearing in
+respected mathematical journals, submitted by respected mathematicians, have turned out to contain
+errors. Recent developments in automated proof systems
+like \url{Coq}{https://en.wikipedia.org/wiki/Coq} show
+promise in checking proofs like for example the famous
+\url{four color theorem}{https://en.wikipedia.org/wiki/Four_color_theorem}.
+
+Informally a proof of a proposition $q$, consists in arguing that an implication $p\implies q$ is true by first assuming $p$. Usually this is done
+not only through one implication $p\implies q$, but through a series
+of intermediate implications
+$$
+p\implies q_1 \implies q_2 \implies q_3 \implies \cdots \implies q_N,
+$$
+where the last proposition $q_N$ is $q$. If $p$ is true, this
+will constitute a proof that $q_N = q$ is true. Just like in \eqref{ordwrong},
+there is an imprecision here. Can you tell what it is?
+
+In this section we will illustrate a simple mathematical proof of the
+proposition:
+$$
+\forall n\in \NN: p(n)\implies p(n^2),
+$$
+where $p(n) = (n\text{ is odd})$ i.e., the square of an odd
+natural number has to be odd. This seems true for a first selection
+of examples: $3^2=9, 5^2=25, \dots$.
+
+First we need to know what $p(n)$ means. What does it mean
+exactly for a number to be odd? This means that it is
+not divisible by $2$ or that there exists another
+natural number $a$, such that $n = 2 a + 1$. So
+$$
+p(n) = \exists a\in \NN: n = 2 a + 1.
+$$
+Therefore we need to show that
+$$
+\left(\exists a\in \NN: n = 2 a + 1\right) \implies
+\left(\exists b\in \NN: n^2 = 2 b + 1\right).
+$$
+Notice that I had to change $a$ into $b$ in the second proposition above.
+The two variables are not the same: $a$ is associated with $n$ and
+$b$ is associated with $n^2$.
+
+Let us assume that $n = 2 a + 1$. Now we need to argue that $
+n^2 = 2 b + 1$ for some $b\in \NN$. You stare at this for a while
+and notice that we should use the assumption $n=2 a + 1$ in
+computing $n^2$:
+$$
+n^2 = (2 a + 1)^2 = (2 a)^2 + 2 (2 a) + 1^2 = 4 a^2 + 4 a + 1 =
+2(2 a^2 + 2 a) + 1.
+$$
+Thus, using our assumption we may conclude that if $n = 2 a + 1$, then
+$$
+n^2 = 2 b + 1,
+$$
+where $b=2a^2+ 2 a$. This completes the proof.
+
+The beauty here is that we have verified for all odd natural numbers
+that their square is odd. Not just a finite selection like
+$3, 7, 11, 13$.
+
+Below I have given a very detailed walk through of the proof above. It
+examplifies how to write up the proof mixing words and mathematics. In
+many ways a proof is like a detailed argument in a court case, except
+that the rules of mathematics are universal. You need the absolute truth.
+
+\begin{video}\label{Video:proofexample}
+\youtube{1tewESCAP2k}  
+\end{video}
+
+
+
+
+\subsection{Proof by contradiction}
+
+A proposition $p$ is either true or false. This seemingly obvious statement
+goes by the name of \footnote{the law of excluded middle}{
+An application could be in proving the existence of irrational numbers $\alpha$ and $\beta$, such that
+$\alpha^\beta$ is rational. The law of excluded middle is here applied to the proposition
+\emph{$\sqrt{2}^{\sqrt{2}}$ is rational}.}.
+
+
+The law of excluded middle can be turned
+into a powerful proof technique called \emph{proof by contradiction}.
+
+Suppose we wish to establish that $p$ is true. Then we turn things upside down by
+assuming that $p$ is false i.e., that $\neg p$ is true. If we then
+by logical deduction can show that
+$$
+\neg p \implies q,
+$$
+for some proposition $q$, which is demonstrably false, then $\neg p$ cannot be true (since
+true $\implies$ false is false). Therefore $\neg p$
+must be false and $p$ must be true. This technique is used all the time!
+
+\beginshex
+We will give an example of a proof by contradiction using a previous exercise: show that
+the set
+$$
+S = \{x\in \QQ \mid x > 0\}
+$$
+does not have a first element. Recall the definition of a first element in
+the context of $S$: $x_0\in S$ is a first element if 
+$$
+\forall x\in S: x_0 \leq x.
+$$
+So if $x_0$ is a first element in $S$, there cannot exist $x_1\in S$, such that
+$x_1 < x_0$.
+
+The proof by contradiction  in this case, runs as follows. Assume that $S$
+has a first element $x_0 = \frac{p}{q}$. Then using $x_0$ we can form
+$$
+x_1 = \frac{p}{q+1},
+$$
+and you \footnote{can check}{Check that $p q < p(q+1)$.} that $x_1\in S$ and $x_1 < x_0$ i.e., $x_0$ is not a first
+element. So our assumption that $S$ has a first element immediately leads
+to the conclusion that $S$ does not have a first element. Therefore this
+assumption has to be false, and $S$ cannot have a first element.
+\endshex
+
+\beginshex
+Suppose that $q(n) = (n \text{ is even})$. Prove that
+$$
+\forall n\in \NN: q(n^2) \implies q(n).
+$$
+Suppose that
+$$
+\sqrt{2} = \frac{m}{n}.
+$$
+Show that this implies $2 n^2 = m^2$ and that $m$ and $n$ are even numbers.
+
+Given the above, write up a precise proof that $\sqrt{2}\not\in \QQ$
+using proof by contradiction.
+
+You may wonder what is so special about rational numbers. Which property does
+$\sqrt{2}$ break? You can explore this by looking at the decimal expansion of
+some fractions below.
+
+\begin{sage}
+print("1/8 =", (1/8).n(digits=50))
+print("3/17 = ", (3/17).n(digits=50))
+print("5/7 = ", (5/7).n(digits=50))
+print("")
+print("sqrt(2) = ", sqrt(2).n(digits=100))
+\end{sage}
+
+However, $\sqrt{2}$ is an algebraic number being a root in the
+polynomial $x^2 - 2$. In general an algebraic number is a number,
+which is a root in a polynomial with coefficients in $\ZZ$.
+
+\endshex
+
+
+\subsection{Proof by induction}
+
+A precocious Gauss proved the formula
+\begin{equation}\label{gaussind}
+1 + 2 + \cdots + n = \frac{n(n+1)}{2}
+\end{equation}
+at the age of seven diplaying remarkable ingenuity for his age. Lesser
+mortals usually use induction to prove this formula. Gauss was asked
+along with his classmates to compute the sum of all natural numbers
+$1, 2, \dots, 100$. Using his formula he quickly came up with the correct
+answer $5050$. His classmates had to work for the entire lesson.
+
+Suppose that the formula in \eqref{gaussind} is viewed as a
+proposition $p(n)$. To prove the formula we need to prove it for all
+natural numbers (you can easily see that $p(1)$ and $p(2)$ are true) i.e.,
+we need to prove
+$$
+\forall n\in \NN: p(n).
+$$
+An induction proof is a way of proving this statement by showing two things:
+\begin{enumerate}[(i)]
+\item
+  $p(1)$
+\item
+  $\forall n\in \NN: p(n)\implies p(n+1)$
+\end{enumerate}
+These two statements ensure that $p(1) \implies p(2)$. Therefore
+$p(2)$ must be true, since we assumed $p(1)$ true from the
+beginning. Similarly $p(2)\implies p(3)$ ensures that $p(3)$
+is true. In fact we have proved $p(n)$ for every $n\in \NN$
+using this technique. One can prove this using proof by
+contradiction and that every non-empty subset
+of $\NN$ has a first element (see subsection \ref{subsecfirst} and below).
+
+\begin{proof}[showhide]
+Suppose by contradiction that there exists $n\in \NN$, such that
+$p(n)$ is false. Then the subset
+$$
+S = \{n\in \NN \mid \neg p(n)\}\subseteq \NN
+$$
+is non-empty. Therefore it has a first element $n_0\in S$. 
+Here $n_0 > 1$, since $p(1)$ is assumed to be true. So we
+know that $p(n_0-1)$ is true and that
+$p(n_0-1)\implies p(n_0)$ is true. But the latter
+implication is a contradiction, since true implies
+false is false.
+\end{proof}
+
+Let us see how an induction proof plays out in the above example
+with the statement $p(n)$ that
+\begin{equation}\label{indant}
+1 + 2 + \cdots + n = \frac{n(n+1)}{2}.
+\end{equation}
+Clearly $p(1)$ is true. We need to prove $p(n)\implies p(n+1)$, so
+we assume that $p(n)$ holds i.e., that \eqref{indant} is true.
+Then we may add $n+1$ to both sides of \eqref{indant} to get
+$$
+1 + 2 + \cdots + n + (n+1) = \frac{n(n+1)}{2} + (n+1).
+$$
+Here the right hand side can be rewritten as
+$$
+\frac{n(n+1) + 2(n+1)}{2} = \frac{(n+1)(n+2)}{2},
+$$
+which is exactly what we want. This is the conjectured formula for
+the sum of the numbers $1, 2, \dots, n, n+1$. Therefore
+we have proved that $p(n)\implies p(n+1)$ and the induction
+proof is complete.
+
+
+\begin{example}
+  For a real number $r\neq 1$, the extremely useful formula
+  \begin{equation}\label{geoind}
+  1 + r + \cdots + r^n = \frac{1 - r^{n+1}}{1-r}
+  \end{equation}
+  holds. Let us prove this formula by induction. For $n=1$ this amounts to the identity
+  $$
+  1 + r = \frac{1-r^2}{1-r},
+  $$
+  which is true since $1-r^2 = (1+r)(1-r)$. We let $p(n)$ denote
+  the identity in \eqref{geoind}. We have seen that $p(1)$ is true. The induction step
+  consists in proving $p(n)\implies p(n+1)$. We can prove this
+  by adding $r^{n+1}$ to the right hand side in \eqref{geoind}:
+  $$
+  \frac{1 - r^{n+1}}{1-r} + r^{n+1} = \frac{1 - r^{n+1} + (1-r) r^{n+1}}{1-r} = \frac{1 - r^{n+2}}{1-r}.
+  $$
+\begin{hideinbutton}{Real life application}
+    In order to pay for a house you borrow $P$ DKK at an interest of
+    $r$ per year. You want to pay off your debt over $N$ years by
+    paying a fixed amount each year. How much is the fixed yearly
+    amount you need to pay?
+
+    Let us analyze the setup: suppose that the fixed yearly amount
+    is $Y$. We will find an equation giving us $Y$ in terms of
+    $P, N$ and $r$. Put $q = 1+ r$.
+
+    After one year you owe
+    $$
+    q P - Y.
+    $$
+    After two years you owe
+    $$
+    q(q P - Y) - Y.
+    $$
+    After three years you owe
+    $$
+    q ( q ( q P - Y) - Y) - Y.
+    $$
+    In general after $n$ years you owe
+    $$
+    q^n P - Y (1 + q + \cdots + q^{n-1}).
+    $$
+    Since we want to be debt free after $N$ years, the yearly payment will have to satisfy
+    $$
+    q^N P = Y ( 1 + q + \cdots + q^{N-1}).
+    $$
+    By the formula \eqref{geoind}, we get
+    $$
+    q^N P = Y \frac{1-q^N}{1-q}.
+    $$
+    Here $Y$ can be isolated giving the formula
+    $$
+    Y = \frac{r P}{1 - \left(\frac{1}{1+r}\right)^N}.
+    $$
+    With the current (August 2020) interest rate around one percent, you pay a fixed monthly
+    amount of around 3200 DKK for borrowing one million DKK over $30$ years.
+  \end{hideinbutton}
+\end{example}
+
+
+\beginshex
+Prove by induction that the sum of the first $n$ odd numbers is
+given by the formula
+$$
+1 + 3 + \cdots + (2 n - 1) = n^2,
+$$
+i.e., for $n=5$ we have
+$$
+1 + 3 + 5 + 7 + 9 = 25.
+$$
+\endshex
+
+\beginshex
+Prove by induction that
+$$
+1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(n+1)(2n + 1)}{6}.
+$$, 
+\endshex
+
+\beginshex
+Prove using the idea of induction that
+$$
+2^n < n!
+$$
+for $n\geq 4$.
+\endshex
+
+The last exercise related to induction concerns the famous \url{pigeonhole principle}{https://en.wikipedia.org/wiki/Pigeonhole_principle}. The statement itself looks innocent, well almost ridiculous, but it is very \url{powerful}{https://mindyourdecisions.com/blog/2008/11/25/16-fun-applications-of-the-pigeonhole-principle/}. Even the go-to website 
+\url{mathoverflow}{https://mathoverflow.net/} for research mathematicians has 
+a quite nice \url{thread}{https://mathoverflow.net/questions/4279/interesting-applications-of-the-pigeonhole-principle} 
+about this.
+
+\beginshex
+Prove the following by induction on $m$: if $n$ items are put into $m$ containers and 
+$n > m$, then at least one container must contain more than one item.
+\endshex
+
+\section{The concept of a function}
+
+A function is a crucial concept in mathematics. In Sage (actually python here) a simple function can be
+programmed like
+
+\begin{code}
+def f(n): return(n+1) 
+\end{code}
+
+The code above seems to take a number and returns the number plus one. This (f) is in fact a function 
+taking as \emph{input} a number and returning as \emph{output} the number plus one. Notice that
+we do not even know which numbers we are talking about here. In mathematics we need to have
+a more precise notion of a function. 
+
+
+Mathematically a function $f$ takes values from a set $S$ and returns values in a set $T$. In details,
+it is denoted $f: S\rightarrow T$ and the value associated with $s\in S$ is denoted $f(s)\in T$.
+
+The above python function could more formally be denoted as $f: \ZZ\rightarrow \ZZ$ with
+$f(n) = n+1$ if we are dealing with the integers, but we cannot tell from the code.
+
+\begin{hideinbutton}{Well, to be fair ...}
+To be completely fair, it is possible from Python version 3.5 to add type annotations to functions, so that we could write
+%\begin{sage}
+%def f(n: int) -> int: return(n+1)
+%\end{sage}
+\begin{code}
+def f(n: int) -> int: return(n+1)
+\end{code}
+in the Python code to state that the function should take values in the integers and return integers.
+\end{hideinbutton}
+
+
+If you want the  super precise mathematical definition of a function, I
+will give it here.  A function $f: S\rightarrow T$ is a subset
+$f\subseteq S\times T$, such that
+$(s, t_1)\in f \land (s, t_2)\in f \implies t_1 = t_2$. In words it states that a
+function $f: S\rightarrow T$ is a subset $f$ of $S\times T$, containing pairs
+having only one second coordinate for every first coordinate.
+
+The everyday working definition of a
+function is more intuitive: a machine taking input from some set
+$S$ and giving output in some set $T$. The uniqueness of the output
+is encoded in the mathematical definition of a function.
+
+
+\beginshex
+Write down precisely how the truth table for $p\implies q$ may
+be expressed in terms of a function $f: S\rightarrow T$. What are the sets $S$ and $T$ in this case?
+\endshex
+
+
+\subsection{Composition of functions}
+
+Given two functions $f: S\rightarrow T$ and $g: U\rightarrow V$, where
+$V\subseteq S$, we define a new function $f\circ g: U \rightarrow T$ by
+$$
+(f\circ g)(u) = f(g(u)).
+$$
+This notion calls for some reflection. We have a total of four sets
+in this definition: $U, V, S$ and $T$ and, not to forget, the condition that
+$V\subseteq S$. If this last condition was not satisfied it would be
+meaningless to apply the function $f$ to $g(u)$.
+I hope the diagram below helps the
+understanding.
+
+\includegraphics{compositefunction.svg}
+
+\begin{remark}
+  The concept of a function is powerful and underlies functional programming in computer science: every computation can be realized as applying a composition of functions to an argument. This is examplified in the computer language
+  \url{Haskell}{https://www.haskell.org/}.
+  \end{remark}
+
+
+  
+\beginshex
+Consider $f: \RR\rightarrow \RR^2$ and $g: \RR^2\rightarrow \RR$ given by
+\begin{align*}
+  f(t) &= (t^2, t^3)\\
+  g((x, y)) &= \cos(x y) + x \sin(x + y).
+\end{align*}
+What is $(g\circ f)(t)$ as a function from $\RR$ to $\RR$ in terms of $t$?
+\endshex
+
+\subsection{Neural networks}
+
+Having defined functions and composition of functions, we can deflate
+the term (deep) neural network, which is often clouded in
+magic and mystery.
+
+A \emph{neural network} is a special case of a function
+\begin{equation}\label{neural}
+f: A\rightarrow B,
+\end{equation}
+where $A\subseteq \RR^m$ and $B\subseteq \RR^n$. Neural networks are
+often compositions of many intermediate functions called
+(hidden) layers.
+
+A function such as \eqref{neural} can
+be written
+$$
+f(x_1, \dots, x_m) = \left(
+f_1(x_1, \dots, x_m), \dots, f_n(x_1, \dots, x_m)\right),
+$$
+where $f_1, \dots, f_n$ are functions $A\rightarrow \RR$.
+
+In a neural
+network the functions $f_1, f_2, \dots, f_n$ are viewed as neurons. Depending on their
+input they either fire or do not fire a signal. Classically this is
+modelled by the \url{perceptron}{https://en.wikipedia.org/wiki/Perceptron},
+which is a function $p:\RR^n\rightarrow \RR$ of the form
+$$
+p(x_1, \dots, x_n) =
+\begin{cases}
+  1 &\text{if } w_1 x_1 + \cdots + w_n x_n > b\\
+  0 &\text{if } w_1 x_1 + \cdots + w_n x_n \leq b
+\end{cases}
+$$  
+  for fixed numbers $w_1, \dots, w_n$ (called weights) and a number $b$ (called the threshold).
+  If the weighted sum $w_1 x_1 + \cdots + w_n x_n$ is above the threshold, the neuron
+  fires (returns the value $1$). If not it does not fire (returns the value $0$).
+
+\includegraphics{perceptron.svg}
+
+
+  \beginshex
+  Consider the three perceptrons $p_1, p_2, p_3: \RR^2\rightarrow \RR$, where
+  $$
+p_1(x, y) =
+\begin{cases}
+  1 &\text{if } -x-y > -\frac{3}{2}\\
+  0 &\text{if } -x-y \leq -\frac{3}{2}
+\end{cases},
+\qquad
+p_2(x, y) =
+\begin{cases}
+  1 &\text{if } x + y > \frac{1}{2}\\
+  0 &\text{if } x + y \leq \frac{1}{2}
+\end{cases},
+$$
+and
+$$
+p_3(x, y) =
+\begin{cases}
+  1 &\text{if } x + y > \frac{3}{2}\\
+  0 &\text{if } x + y \leq \frac{3}{2}
+\end{cases}.
+$$
+Let $f(x, y) = p_3 (p_1(x, y), p_2(x, y))$. Then $f$ is
+a composite function $f = g\circ h$ of two functions $h: \RR^2\rightarrow \RR^2$
+and $g: \RR^2\rightarrow \RR$. Write down these functions.
+
+Compute
+$f(0, 0), f(1, 0), f(0, 1)$ and $f(1, 1)$.
+
+
+
+Relate the perceptrons $ p_1 $ and $ p_2 $ to the illustration
+below. What do you think the red and blue line illustrate?  What does
+it mean that a dot is solid compared to hollow? What is special
+about points between the red and blue lines?  Try to relate $f(0,0),
+f(1,0), f(0,1)$ and $f(1,1)$ to the illustration.
+
+\includegraphics{whkperceptron.svg}
+
+(Illustration courtesy of William Heyman Krill).
+
+\endshex
+
+  \beginshex
+  Give weights $w_1, w_2$ and a threshold $b$ for a perceptron $p:\RR^2\rightarrow \RR$ that computes
+  the logical and function $\land$ i.e, $p$ must satisfy
+  \begin{align*}
+    p(0,0) &= 0\\
+    p(1, 0) &= 0\\
+    p(0,1) &= 0\\
+     p(1, 1) &= 1.
+  \end{align*}
+  Do the same for the logical or function $\lor$.
+  \endshex
+  
+  The output of one neuron can be used as input for other neurons in a potentially extremely complicated network:
+
+  \includegraphics{deepneural.png}
+
+  The diagram above represents a neural network, which is a function $\RR^8\rightarrow \RR^4$. This function
+  is actually a composition (represented by the hidden layers $1$, $2$, $3$ and the output layer):
+  $$
+  \RR^8\rightarrow \RR^9 \rightarrow \RR^9 \rightarrow \RR^9 \rightarrow \RR^4.
+  $$
+  All of the nodes above, except the ones in the input layer, represent perceptrons.
+
+  \beginshex 
+  Is it possible to find a perceptron $p:\RR^2\rightarrow \RR$, such that
+    \begin{align*}
+    p(0,0) &= 0\\
+    p(1, 0) &= 1\\
+    p(0,1) &= 1\\
+     p(1, 1) &= 0?
+  \end{align*}
+  What if you are allowed to use a neural network composed as $\RR^2\rightarrow \RR^2\rightarrow \RR$ (one hidden layer)
+  \includegraphics{xor.svg}?
+  \endshex
+  
+  Mathematically there is no reason to use special functions such as perceptrons in each node. One also uses
+  a (smooth) version of the perceptron employing the \url{sigmoid function}{https://en.wikipedia.org/wiki/Sigmoid_function}.
+  With the notation above, this function is given as
+  $$
+  \sigma(x_1, \dots, x_n) = \frac{1}{1 + e^{-(w_1 x_1 + \cdots + w_n x_n) - b}},
+  $$
+
+\end{document}
