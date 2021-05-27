@@ -284,7 +284,7 @@ class HTML(Writer, Enumerate, Interactive):
         leftmargin = self.parsearg(obj, 0)
         rightmargin = self.parsearg(obj, 1)
         html = self.parsechildren(obj.body)
-        return f'<p style="margin-left: {leftmargin}; margin-right: {rightmargin};">{html}</p>"'
+        return f'<p style="margin-left: {leftmargin}; margin-right: {rightmargin};">{html}</p>'
 
     
     def chapter(self, obj):
