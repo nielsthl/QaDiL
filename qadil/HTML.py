@@ -310,7 +310,7 @@ class HTML(Writer, Enumerate, Interactive):
         self.verbatim = True
         html= self.parsechildren(obj.body)
         self.verbatim = False
-        return f'<p><pre>{html}</pre></p>'
+        return f'<p><pre><code>{html}</code></pre></p>'
 
 
     @emphasize
