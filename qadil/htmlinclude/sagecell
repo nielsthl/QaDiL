@@ -5,6 +5,7 @@
   sagecell.makeSagecell({
   inputLocation: ".sage",
   evalButtonText: "Compute",
+  linked: true,
   languages : ["sage", "python"],
   hide : ["permalink"] 
   });
