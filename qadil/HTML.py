@@ -309,6 +309,7 @@ class HTML(Writer, Enumerate, Interactive):
     def code(self, obj):
         self.verbatim = True
         html= self.parsechildren(obj.body)
+        html = html.lstrip()
         self.verbatim = False
         return f'<p><pre><code>{html}</code></pre></p>'
 
