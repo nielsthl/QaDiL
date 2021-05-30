@@ -1,0 +1,1 @@
+zip -r QaDiL.zip ./QaDiL -x '*.git*' '*__pycache__*'
