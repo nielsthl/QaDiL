@@ -1,4 +1,4 @@
-# QaDiL
+# QaDiL - Quick and Dirty interactive LaTeX
 
 QaDiL is a collection of python programs/classes targeted to the production of
 math notes in `html` with interactive elements like quizzes, computer algebra and annotation. 
