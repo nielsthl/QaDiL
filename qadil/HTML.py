@@ -126,6 +126,7 @@ class HTML(Writer, Enumerate, Interactive):
             "lemma",
             "maketitle",
             "newcommand",
+            "openeyes",
             "paraquiz",
             "proof",
             "proposition",
@@ -555,6 +556,22 @@ class HTML(Writer, Enumerate, Interactive):
         self.macros[macroname] = (noofparams, body)
         return ""
 
+    def openeyes(self, obj):
+
+        id = uuid4()
+        
+        html = self.parsechildren(obj.body)
+        returnstr = (
+            '<p><div style="float:right;"><a href="#%(random)s" class="btn btn-default"'
+            'data-toggle="collapse"><span class="glyphicon glyphicon-eye-open"></span>'
+            '<span class="glyphicon glyphicon-eye-open"></span></a></div>'
+            '<div style="clear: both;"></div></p>'
+            )
+        returnstr += '<div id="%(random)s" class="collapse">'
+        returnstr = returnstr%{'random':id}
+        returnstr += html + '</div>'
+        return returnstr
+    
     def paragraph(self): 
         if self.mathmode or self.verbatim:
             return '\n\n'
