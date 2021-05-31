@@ -2,7 +2,7 @@
 
 QaDiL is a collection of python programs/classes targeted for the production of
 math notes in `html` with interactive elements like quizzes, computer algebra and annotation. 
-It is built on top of [Hypothesis](https://hypothesis.is), [KaTeX](https://katex.org) and 
+It is built on top of [Hypothesis](https://web.hypothes.is), [KaTeX](https://katex.org) and 
 [Sage](https://sagecell.sagemath.org/).
 
 The input syntax is LaTeX like with certain interactive extensions like
