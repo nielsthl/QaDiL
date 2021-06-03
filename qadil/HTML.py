@@ -118,6 +118,7 @@ class HTML(Writer, Enumerate, Interactive):
             "frameit",
             "hideinbutton",
             "hint",
+            "html",
             "htmlpath",
             "includegraphics",
             "includehtml",
@@ -507,8 +508,14 @@ class HTML(Writer, Enumerate, Interactive):
     def hashtag(self, obj):
         return '#'
 
-    def index(self, obj):
-        return ""
+
+    def html(html, obj):
+        self.verbatim = True
+        html= self.parsechildren(obj.body)
+        html = html.lstrip()
+        self.verbatim = False
+        return f'{html}'
+
     
     def htmlpath(self, obj):
         # cs
@@ -517,6 +524,9 @@ class HTML(Writer, Enumerate, Interactive):
         except:
             sys.exit("Missing or wrong path in includepath")
         self.pathtohtml = ipath
+        return ""
+
+    def index(self, obj):
         return ""
     
     def inlinemath(self, obj):
