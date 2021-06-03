@@ -15,6 +15,8 @@ class Verbatim:
         if match:
             txt = match.group(1)
             self.pos = match.end(0)
+            # Escape '<' and '>'
+            txt = txt.replace("<", "&lt;").replace(">", "&gt;")
             self.tokenlist.append(Token(TokenType("BEGINENV"), "\\begin{code}"))
             self.tokenlist.append(Token(TokenType("TEXT"), txt))
             self.tokenlist.append(Token(TokenType("ENDENV"), "\\end{code}"))
