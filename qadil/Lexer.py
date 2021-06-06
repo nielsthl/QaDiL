@@ -103,6 +103,10 @@ class Lexer(Macros, Verbatim):
                 if self.value == "\\begin{html}":
                     self.handlehtml()
                     self.getnexttok()
+                if self.value == "\\begin{tikzpicture}":
+                    self.handletikzpicture()
+                    self.getnexttok()
+                
                     
 
             self.tokenlist.append(self.curtok)
