@@ -143,6 +143,7 @@ class HTML(Writer, Enumerate, Interactive):
             "textit",
             "texttt",
             "theorem",
+            "tikzpicture",
             "title",
             "url",
             "video",
@@ -506,7 +507,10 @@ class HTML(Writer, Enumerate, Interactive):
         return f'<div class="centerimg"><img src="{arg}" {optarg}></div>'
         
     def hashtag(self, obj):
-        return '#'
+        if self.mathmode:
+            return '\\#'
+        else:
+            return '#'
 
 
     def html(html, obj):
@@ -719,6 +723,12 @@ class HTML(Writer, Enumerate, Interactive):
     @emphasize
     def theorem(self, obj):
         return self.genericenv(obj, "theorem")
+
+    def tikzpicture(self, obj):
+        src = self.parsechildren(obj.body)
+        return f'<script type="text/tikz">\\begin{{tikzpicture}}{src}\\end{{tikzpicture}}</script>'
+
+        
         
     def title(self, obj):
         self.titlename = self.parsearg(obj, 0)
