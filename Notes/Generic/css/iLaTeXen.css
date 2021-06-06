@@ -1,6 +1,26 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=PT+Serif|PT+Serif+Caption|PT+Mono|Source+Sans+Pro:200,400");
 
+.conjecture {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 2px;
+  border-color: #ccc; */
+}
+
+
+.conjecture:before {
+    display:block;
+    content: "(" attr(data-count) ") CONJECTURE.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
 .corollary {
   display: block;
   margin: 12px 0;

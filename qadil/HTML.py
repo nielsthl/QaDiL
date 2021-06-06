@@ -104,6 +104,7 @@ class HTML(Writer, Enumerate, Interactive):
             "chaptername",
             "chapterno",
             "code",
+            "conjecture",
             "corollary",
             "definition",
             "documentclass",
@@ -316,11 +317,13 @@ class HTML(Writer, Enumerate, Interactive):
         self.verbatim = False
         return f'<p><pre><code>{html}</code></pre></p>'
 
-
+    @emphasize
+    def conjecture(self, obj):
+        return self.genericenv(obj, "conjecture")
+    
     @emphasize
     def corollary(self, obj):
         return self.genericenv(obj, "corollary")        
-
     
     @emphasize
     def definition(self, obj):
