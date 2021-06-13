@@ -4,7 +4,7 @@
 
 
 
-\includehtml{katex0.12.0}
+\includehtml{katex0.13.11}
 
 
 \includehtml{sidebar}
@@ -19,4 +19,6 @@
 
 \includehtml{iLaTeXen}
 \includehtml{quiz}
-\includehtml{orderquiz} 
+\includehtml{orderquiz}
+
+\includehtml{tikz}
