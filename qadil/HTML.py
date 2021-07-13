@@ -172,15 +172,25 @@ class HTML(Writer, Enumerate, Interactive):
 #        print(self.envname, self.envcount)
         self.labelno = f'{self.chapterstr}.{str(self.envcount)}'
         self.currentlabel = self.envprefix + self.labelno
+
+    def marklabel(self):
+        return f'<span id="{self.currentlabel}"></span>'
         
     def getlabel(self, str):
         #
+        # There are four kinds of labels: equation, environment, section and item:
+        #
+        # Each entry in dictionary consists of an htmllabel and a replacement text.
+        #
         # "env2.17" ---> "2.17" [regular labels], "(2.)" ---> "(2.)" [enumerate labels]
         #
-        if str[:3] in ["equ", "env", "sec"]:
-            return str[3:]
-        else:
-            return str
+        # "ite2.1:(i)"" ---> (ite2.1, "(i)") [item labels in enumerate]
+        #
+
+        if str[:3] == "ite":
+            return str.split(":")
+        return (str, str[3:])
+       
         
     def KaTeX_display(self, str):
         return f'<div class="math"></div><script type="math/tex; mode=display">{str}</script>'
@@ -399,12 +409,12 @@ class HTML(Writer, Enumerate, Interactive):
     def eqref(self, obj):
         label = self.parsearg(obj, 0)
         try:
-            htmllabel = self.labels[label]
-            strno = self.getlabel(htmllabel)
+            comblabel = self.labels[label]
+            htmllabel, labeltxt = self.getlabel(comblabel)
             if self.mathmode:
-                repl = f"\\href{{{htmllabel}}}{{({strno})}}"
+                repl = f"\\href{{{htmllabel}}}{{({labeltxt})}}"
             else:
-                repl = f'<a href=#{htmllabel}>({strno})</a>'
+                repl = f'<a href=#{htmllabel}>({labeltxt})</a>'
         except:
             #
             # Label not defined
@@ -516,7 +526,7 @@ class HTML(Writer, Enumerate, Interactive):
             return '#'
 
 
-    def html(html, obj):
+    def html(self, obj):
         self.verbatim = True
         html= self.parsechildren(obj.body)
         html = html.lstrip()
@@ -548,7 +558,11 @@ class HTML(Writer, Enumerate, Interactive):
         label = self.parsearg(obj, 0)
         self.labels[label] = self.currentlabel
         if self.lblfile:
-            self.lblfile.write(f'{label}, {self.labels[label]}\n') 
+            self.lblfile.write(f'{label}, {self.labels[label]}\n')
+        #if not self.mathmode:    
+        #    return  f'<span id="{label}"></span>' # for html \href
+        #else:
+        #    return ""
         return ""
 
     @emphasize
@@ -613,12 +627,12 @@ class HTML(Writer, Enumerate, Interactive):
     def ref(self, obj):
         label = self.parsearg(obj, 0)
         try:
-            htmllabel = self.labels[label]
-            strno = self.getlabel(htmllabel)
+            comblabel = self.labels[label]
+            htmllabel, labeltxt = self.getlabel(comblabel)
             if self.mathmode:
-                repl = f"\\href{{{htmllabel}}}{{{strno}}}"
+                repl = f"\\href{{{htmllabel}}}{{{labeltxt}}}"
             else:
-                repl = f'<a href=#{htmllabel} class="labelref">{strno}</a>'
+                repl = f'<a href=#{htmllabel} class="labelref">{labeltxt}</a>'
         except:
             #
             # Label not defined
@@ -647,6 +661,7 @@ class HTML(Writer, Enumerate, Interactive):
         self.verbatim = False
         if len(obj.opts) > 0:
             optname = self.parseopt(obj, 0)
+            name = "sage"
             if optname == "showhide":
                 Cname = name.capitalize() # see genericenv
                 id = uuid4()

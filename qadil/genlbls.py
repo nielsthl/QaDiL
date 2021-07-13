@@ -29,7 +29,9 @@ sectioncount = 1
 # poldivthm, env2.14
 # subsecfirst, sec1.5.1
 #
-
+# Special care is needed for labels in \items in \begin{enumerate} .. \end{enumerate}
+#
+# itemlabel, ite1.2:(&#8560;.)
 
 for f in lblsfiles:
     with open(f, "r") as fil:
@@ -39,18 +41,19 @@ for f in lblsfiles:
         for li in csvreader:
             dict[li[0]] = [htmlfilename, li[1].lstrip()] 
 
+#print(dict)
+
 def labeltype(str):
     #
     # "equ2.1" -> "equ"
     #
-    if str[:3] in ["equ", "env", "sec"]:
-        return str[:3]
-    else:
-        return str
-
+    return str[:3]
+   
 def index(str):
     #
     # "equ2.1" -> "2.1"
+    #
+    # "ite2.1:(i)" -> "(i)"
     #
     if str[:3] in ["equ", "env", "sec"]:
         str = str[3:]
@@ -59,7 +62,8 @@ def index(str):
         return str
         #return str[3:]
     else:
-        return str
+        # We must have an item label
+        return str.split(":")[-1]
 
     return str[3:]
             
@@ -68,22 +72,32 @@ def lookuplabel(matchobj):
     try:
         repl = dict[label]
         fname = repl[0]
-        htmllabel = repl[1]
-        ltyp = labeltype(htmllabel)
-        ind = index(htmllabel)
+        comblabel = repl[1]
+        ltyp = labeltype(comblabel)
+        if ltyp == "ite":
+            htmllabel = comblabel.split(":")[0]
+        else:
+            htmllabel = comblabel
+        ind = index(comblabel)
     except:
-        return "UNDEFINED: " + label
+        return "UNDEFINED: " + label 
     if ltyp == "equ":
         return f'<a href="{fname}#{htmllabel}">({ind})</a>'
     else:
         return f'<a href="{fname}#{htmllabel}">{ind}</a>'
+        
 
 def mathmodelookuplabel(matchobj):
     label = matchobj.group(1)
     try:
         repl = dict[label]
         fname = repl[0]
-        htmllabel = repl[1]
+        comblabel = repl[1]
+        ltyp = labeltype(comblabel)
+        if ltyp == "ite":
+            htmllabel = comblabel.split(":")[0]
+        else:
+            htmllabel = comblabel   
         ind = index(htmllabel)
     except:
         return "UNDEFINED: " + label
