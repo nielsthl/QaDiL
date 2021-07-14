@@ -759,7 +759,7 @@ h1, h2, h3, h4, h5, h6 { font-family: "PT Serif Caption", sans-serif; font-weigh
   display: block;
 }
 
-ul {
+div.sidenav ul {
     list-style-type: none;
     text-align: left;
     font-size: 16px;
@@ -791,7 +791,7 @@ li a {
     margin-left: 10%;
     margin-right: 10%;
 }
-
+ 
 .extendedwidth {
     width: 20%;
     }
