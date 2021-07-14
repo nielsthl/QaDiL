@@ -8,6 +8,15 @@ class Enumerate:
         self.lastitemizetype = ''
         self.lastitemlabels = None
         self.lastitemcount = 0
+
+        # We need to keep track of items in \begin{enumerate}..\end{enumerate} in the same way as we keep track of
+        # environments and equqations i.e., with predefined labels for hyperlinks in html
+        #
+        # An item label should look like "ite3.17" signifying the 17th item in Chapter 3
+
+        self.itemlabel = ""
+        self.itemprefix = "ite"
+        self.itemcount = 0
         
         self.itemlabels = {}
         self.itemlabels['g'] = [ # Format: html Greek
@@ -85,6 +94,10 @@ class Enumerate:
             return itemizestr + itemstr + "</li></ul>"
             
 
+    def updateitemlabel(self):
+        self.itemcount += 1
+        self.itemlabel = self.itemprefix + self.chapterstr + "." + str(self.itemcount)
+
     def enumerate(self, obj):
         # Env
 
@@ -157,22 +170,24 @@ class Enumerate:
         except StopIteration:
             return "<ol></ol>" # No first \item
 
-        itemstr = '<li>'
-        self.currentlabel = baselabel + '(' + itemlabels[itemcount] + '.)'
-        self.baselabel = self.currentlabel
+        self.updateitemlabel()
+        self.baselabel = baselabel + '(' + itemlabels[itemcount] + '.)'
+        self.currentlabel = self.itemlabel + ":" + self.baselabel
+        itemstr = f'<li id="{self.itemlabel}">'
 
         try:
             while True:
                 itemcount += 1
                 # self.currentlabel = baselabel + '(' + itemlabels[itemcount] + '.)' # !! 4.10.2020
-                self.currentlabel = baselabel + '(' + itemlabels[itemcount-1] + '.)'
-                self.baselabel = self.currentlabel
+                self.baselabel = baselabel + '(' + itemlabels[itemcount-1] + '.)'
+                self.currentlabel = self.itemlabel + ":" + self.baselabel
                 c = next(bc)
                 while(not self.testitem(c)):
                     itemstr += self.ltxaction[self.typename(c)](c)
                     c = next(bc)
                 itemizestr += itemstr + "</li>"
-                itemstr = "<li>"
+                self.updateitemlabel()
+                itemstr = f'<li id="{self.itemlabel}">'
         except StopIteration:
 
         # Reset self.enumlabel to previous nesting. Peel off trailing \(.*?\).
