@@ -156,6 +156,7 @@ class HTML(Writer, Enumerate, Interactive):
         self.functions["equation*"] = getattr(self, "equationstar")
         self.functions["section*"] = getattr(self, "sectionstar")
 
+        self.functions["&"] = getattr(self, "ampersand")
         self.functions["%"] = getattr(self, "percent")
         self.functions["#"] = getattr(self, "hashtag")
         
@@ -273,9 +274,6 @@ class HTML(Writer, Enumerate, Interactive):
 
         return f'<span id="{labelname}"></span>{html}'
 
-    def author(self, obj):
-        self.authorname = self.parsearg(obj, 0)
-        return ""
     
     def alignstar(self, obj):
         # env
@@ -283,6 +281,14 @@ class HTML(Writer, Enumerate, Interactive):
         f"\\begin{{aligned}}{self.parsechildren(obj.body)}\\end{{aligned}}"\
         )
 
+    def ampersand(self, obj):
+        return '&'
+    
+    def author(self, obj):
+        self.authorname = self.parsearg(obj, 0)
+        return ""
+
+    
     def bye(self, obj):
         return ""
     

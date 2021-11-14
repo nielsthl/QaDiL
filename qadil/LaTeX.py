@@ -25,7 +25,7 @@ class LaTeX(Writer):
         
         Writer.__init__(self, inputstring)
  
-        self.graphicsprefix = "/home/niels/IMO/img/"
+        self.graphicsprefix = "/home/niels/QNotes/IMO21/img/" # Suk!
         self.mathmode = False
         self.verbatim = False
         self.functions = {}
@@ -50,6 +50,7 @@ class LaTeX(Writer):
             "example",
             "equation",
             "footnote",
+            "frameit",
             "hideinbutton",
             "hint",
             "htmlpath",
@@ -172,6 +173,10 @@ class LaTeX(Writer):
             sys.exit("Wrong parameters in footnote")
 
         return f'{htxt}\\footnote{{{fn}}}'
+
+    def frameit(self, obj):
+        latex = self.parsechildren(obj.body)
+        return f'\\begin{{tcolorbox}}{latex}\\end{{tcolorbox}}'
     
     def hideinbutton(self, obj):
         buttontitle = self.parsearg(obj, 0)
