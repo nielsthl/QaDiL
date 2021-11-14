@@ -39,6 +39,7 @@ class LaTeX(Writer):
 
         # "Standard" functions
         functions(
+            "align",
             "chapterno",
             "chapter",
             "code",
@@ -97,6 +98,10 @@ class LaTeX(Writer):
     
 ##### Functions
 
+
+    def align(self, obj): # Only one label possible
+        latex = self.parsechildren(obj.body)
+        return f"\\begin{{align}}\\begin{{split}}{latex}\\end{{split}}\\end{{align}}"
 
     def chapterno(self, obj):
         no = int(self.parsearg(obj, 0))-1
@@ -273,6 +278,7 @@ class LaTeX(Writer):
         latex = self.parsechildren(obj.body)
 
         return "\\begin{quiz} Quiz not included in static version.\\end{quiz}"    
+
     @emphasize
     def remark(self, obj):
         return self.genericenv(obj, "remark")        
@@ -284,8 +290,9 @@ class LaTeX(Writer):
     
         latex = self.parsechildren(obj.body)
 
-        #return "\n\\noindent{\\bfseries (Sage not included in static version)}\\par"
+#        return "\n\\noindent{\\bfseries (Sage not included in static version)}\\par"
         return "\\begin{sage} Interactive code not included in static version.\\end{sage}"
+#        return f"\\begin{{sage}} {latex}\\end{{sage}}"
 
 
 
