@@ -1,8 +1,10 @@
 import re
 
+NEVER_MATCHES = r'(?!x)x'
+
 class TokenType:
 
-    def __init__(self, name, rege=None):
+    def __init__(self, name, rege):
         self.name = name
         if rege:
             self.rege = re.compile(rege)
@@ -24,7 +26,7 @@ class Token:
     RIGHTBRACKET = TokenType('RIGHTBRACKET', r'\]')
     SPACE = TokenType('SPACE', r'[ \t]')
     WORD = TokenType('WORD', r'[^ \\\{\}\$\%&\n\[\]]+') # Take care of dangling '#' later
-    TEXT = TokenType('TEXT')
+    TEXT = TokenType('TEXT', NEVER_MATCHES)
     
     # Ordering important below! E.g. DISPLAYDELIMITER must come before MATHDELIMITER
     
@@ -52,5 +54,5 @@ class Token:
         self.content = content
 
     def __str__(self):
-        return "<{type}, {content}>".format(type=self.type.name, content=self.content)
+        return "Token(TokenType.{type}, \"{content}\")>".format(type=self.type.name, content=self.content)
 

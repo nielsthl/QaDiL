@@ -53,8 +53,10 @@ class Lexer(Macros, Verbatim):
                 self.pos = match.end(0)
                 return
 
-        lineno = self.countlines(self.pos)    
-        raise LexerException("Unknown token:"+self.inputstring[self.pos: self.pos+10], lineno)
+        raise LexerException(
+            "Unknown token:"+self.inputstring[self.pos:].split()[0],
+            self.countlines(self.pos)
+        )
 
     #
     # Functions at tokenize level:

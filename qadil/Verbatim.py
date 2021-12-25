@@ -55,6 +55,7 @@ class Verbatim:
             lineno = self.countlines(self.pos)
             raise Exception("Tikzpicture environment not ended properly")
 
+    # TODO: code duplication
     def handleverbatim(self):
         
         regex = r'(.*?)\\end\{verbatim\}'

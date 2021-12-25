@@ -23,4 +23,5 @@ doc.translate()
 s = doc.HTML()
 print(s)
 
-
+if __name__ == '__main__':
+    pass
