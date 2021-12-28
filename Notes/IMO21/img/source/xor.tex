@@ -1,0 +1,26 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{positioning, shapes}
+\tikzstyle{inputNode}=[draw,circle,minimum size=30pt,inner sep=0pt]
+\begin{document}
+  \begin{tikzpicture}[node distance=8cm, auto, thick]
+  \node[inputNode] (x1) at (0, 2) {$x_1$};
+  \node[inputNode] (x2) at (0,0)  {$x_2$};
+  \node[inputNode] (p1) at (2,2)  {$p_1$};
+  \node[inputNode] (p2) at (2, 0) {$p_2$};
+  \node[inputNode] (p3) at (4, 1) {$p_3$};
+  \node (o) at (5.5,1) {};
+  \draw[->] (x1) to (p1);
+  \draw[->] (x1) to (p2);
+  \draw[->] (x2) to (p1);
+  \draw[->] (x2) to (p2);
+  \draw[->] (p1) to (p3);
+  \draw[->] (p2) to (p3);
+  \draw[->] (p3) to (o);
+  \end{tikzpicture}
+\end{document}
+
+%
+% Blev her nødt til først at oversætte med pdflatex og efterfølgende
+% køre pdf2svg
+%

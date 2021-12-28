@@ -1,0 +1,40 @@
+%\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\ou
+%tfile}},multi=false]{standalone}[2012/04/13]
+
+\documentclass[crop,tikz]{standalone}[2012/04/13]
+
+
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\usepackage{pgf}
+
+\usetikzlibrary{arrows,automata}
+\usepackage[latin1]{inputenc}
+\begin{document}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+ % \tikzstyle{every state}=[fill=red,draw=none,text=white]
+
+  \node[state]         (A)                    {$F$};
+  \node[state]         (B) [below left of=A] {$a$};
+  \node[state]         (C) [below right of=A] {$b$};
+  \node[state]         (D) [below of=B]       {$c$};
+  \node[state]         (E) [right of=D] {$d$};
+  \node[state]         (F) [right of=E]       {$e$};
+  \node[state]         (G) [below of=D]       {$x$};
+  \node[state]         (H) [right of=G]       {$y$};
+  
+
+  
+  \path (B) edge              node {$\pd{F}{a}$} (A);
+  \path (C) edge              node {$\pd{F}{b}$} (A);
+  \path (E) edge              node {$\pd{b}{d}$} (C);
+  \path (F) edge              node {$\pd{b}{e}$} (C);
+  \path (D) edge              node {$\pd{a}{c}$} (B);
+  \path (G) edge              node {$\pd{c}{x}$} (D);
+  \path (G) edge [bend right]  node {$\pd{d}{x}$} (E);
+  \path (H) edge [bend left] node {$\pd{c}{y}$} (D);
+  \path (H) edge              node {$\pd{e}{y}$} (F);
+  \path (H) edge [bend left]  node {$\pd{F}{y}$} (A);
+\end{tikzpicture}
+
+\end{document}

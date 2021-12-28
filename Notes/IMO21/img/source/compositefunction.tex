@@ -1,0 +1,62 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}
+\makeatletter
+\begin{document}
+
+\def\firstset{circle [x radius=2, y radius=3]}
+\def\secondset{circle [x radius=1, y radius=3.5]}
+\def\secondsetclip{circle [x radius=2, y radius=2]} 
+\def\thirdset{circle [x radius=2, y radius=1.5]}
+
+\colorlet{circle edge}{blue!50}
+\colorlet{circle area}{blue!20}
+
+\tikzset{filled/.style={fill=circle area, draw=circle edge, thick},
+    outline/.style={draw=circle edge, thick}}
+
+  \begin{tikzpicture}[
+      >=stealth,
+      bullet/.style={
+        fill=black,
+        circle,
+        inner sep=1pt
+      },
+      projection/.style={
+        ->,
+        thick,
+        shorten <=2pt,
+        shorten >=2pt
+      },
+    ]
+
+    \draw (0, 0) \firstset;
+    \node [bullet, label=below:\(u\)] (x) at (-1, -0.5) {};
+    \node[font=\large] (X) at (0, 4) {\(U\)};
+
+    \begin{scope}[xshift=4cm]
+      
+      \draw (0, 0) \secondset;
+      
+      \node[font=\large] (Y) at (0, 4) {\(S\)};
+      \node[above] at (0, 1.5) {\(V\)};
+      \clip \secondsetclip;
+      \fill[filled] \secondset;
+      \node [bullet,
+      label=above:\(g(u)\)] (fx) at (0.3, 0) {};
+       \node[font=\large] at (0, 1.5) {\(V\)};
+      
+      
+    \end{scope}
+    \begin{scope}[xshift=8cm]
+      \draw (0, 0) \thirdset; \node [bullet,
+      label=below:\(f(g(u))\)] (gfx) at (-0.5, -0.1) {};
+      \node[font=\large] (Z) at (0, 4) {\(T\)};
+    \end{scope}
+
+    \draw [projection] (x) -- (fx);
+    \draw [projection] (fx) -- (gfx);
+  \end{tikzpicture}
+
+
+
+\end{document}
+

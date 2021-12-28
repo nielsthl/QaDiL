@@ -1,0 +1,31 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}
+\makeatletter
+\begin{document}
+
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+
+
+\begin{tikzpicture}[scale=2]
+
+    \coordinate (a) at (0,0);
+    \coordinate (b) at (4,2);
+    \coordinate (c) at (6,-1.5);
+    \draw[thick] (a)
+    -- 
+    node [sloped,above] {$\abs{u-w}$}
+    (b) 
+    -- 
+    node [sloped,above] {$\abs{w-v}$}
+    (c) 
+    -- 
+    node [sloped,below] {$\abs{u-v}$} 
+    (a);
+    \foreach \c in {a,b,c}
+    \fill (\c) circle (1pt);
+
+    \node at (a) [left=1mm]{$u$};
+    \node at (b) [above=1mm]{$v$};
+    \node at (c) [below right]{$w$};
+  \end{tikzpicture}
+
+\end{document}

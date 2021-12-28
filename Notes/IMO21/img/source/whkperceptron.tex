@@ -1,0 +1,61 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+
+
+
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+
+\begin{document}
+
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{ffqqqq}{rgb}{1.,0.,0.}
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=2.5cm,y=2.5cm, scale=1.5]
+\draw[->,color=black] (-1.,0.) -- (2.,0.);
+\foreach \x in {-1.,1.}
+\draw[shift={(\x,0)},color=black] (0pt,2pt) -- (0pt,-2pt) node[below] {\footnotesize $\x$};
+\draw[->,color=black] (0.,-1.) -- (0.,2.);
+\foreach \y in {-1.,1.}
+\draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt) node[left] {\footnotesize $\y$};
+\draw[color=black] (0pt,-10pt) node[right] {\footnotesize $0$};
+\clip(-1.,-1.) rectangle (2.,2.);
+\draw [color=ffqqqq,domain=-1.:2.] plot(\x,{(--1.5-1.*\x)/1.});
+\draw [color=qqqqff,domain=-1.:2.] plot(\x,{(--0.5-1.*\x)/1.});
+\begin{scriptsize}
+\draw[color=ffqqqq] (-2.372216062518367,4.028527196200177) node {$f$};
+\draw[color=qqqqff] (-3.239842477962161,3.6331531334662968) node {$g$};
+\draw [fill=qqqqff] (0.768811213645242,1.716687190492348) circle (2.5pt);
+\draw [fill=qqqqff] (0.2416457966667342,0.925939065024587) circle (2.5pt);
+\draw [fill=qqqqff] (0.16476750669070184,1.5848958362477212) circle (2.5pt);
+\draw [fill=qqqqff] (1.3069592434774686,0.6403911308278954) circle (2.5pt);
+\draw [fill=qqqqff] (1.4277679848683766,1.2993479020510297) circle (2.5pt);
+\draw [fill=qqqqff] (0.26,0.5) circle (2.5pt);
+\draw [fill=qqqqff] (1.66,-0.64) circle (2.5pt);
+\draw [color=qqqqff] (-0.6918762958993732,-0.07347870466383327) circle (2.5pt);
+\draw [color=qqqqff] (-0.6479458444844975,-0.677522411618373) circle (2.5pt);
+\draw [color=qqqqff] (0.5711241822783015,-0.33706141315308696) circle (2.5pt);
+\draw [color=qqqqff] (-0.6808936830456543,0.8710260007559925) circle (2.5pt);
+\draw [color=qqqqff] (-0.472224038824995,0.7062868079502089) circle (2.5pt);
+\draw [color=ffqqqq] (1.49366366199069,0.32189535807004727) circle (2.5pt);
+\draw [color=ffqqqq] (1.3179418563311875,1.6507915133700346) circle (2.5pt);
+\draw [fill=ffqqqq] (0.74,0.4) circle (2.5pt);
+\draw [color=ffqqqq] (0.8456895036212743,1.035765193561776) circle (2.5pt);
+\draw [fill=ffqqqq] (-0.3404326845803681,1.6178436748088778) circle (2.5pt);
+\draw [color=ffqqqq] (-0.12078042750598986,1.8155307061758181) circle (2.5pt);
+\draw [fill=ffqqqq] (0.8347068907675553,-0.1833048332010223) circle (2.5pt);
+\draw [fill=ffqqqq] (0.10985444242210728,0.1571561652642637) circle (2.5pt);
+\draw [fill=ffqqqq] (-0.6040153930696219,0.4536867123146741) circle (2.5pt);
+\draw [fill=ffqqqq] (0.34,-0.7) circle (2.5pt);
+\draw [fill=ffqqqq] (-0.20864133033574114,-0.6335919602034974) circle (2.5pt);
+\draw [color=qqqqff] (1.0323939221344958,-0.7763659273018432) circle (2.5pt);
+\draw [fill=qqqqff] (-0.7028589087530921,1.376226192027062) circle (2.5pt);
+\draw [color=ffqqqq] (1.7133159190650682,0.8600433879022735) circle (2.5pt);
+\draw [color=ffqqqq] (0.4942458923022692,1.3213131277584675) circle (2.5pt);
+\draw [fill=ffqqqq] (-0.351415297434087,1.0906782578303704) circle (2.5pt);
+\draw [fill=qqqqff] (1.383837533453501,-0.23821789746961683) circle (2.5pt);
+\draw [fill=qqqqff] (0.6589850851080528,0.1132257138493881) circle (2.5pt);
+\draw [color=qqqqff] (0.1757501195444207,-0.31509618744564916) circle (2.5pt);
+\end{scriptsize}
+\end{tikzpicture}
+
+\end{document}

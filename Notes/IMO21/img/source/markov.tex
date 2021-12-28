@@ -1,0 +1,19 @@
+\documentclass[crop,tikz,convert={outext=.svg,command=\unexpanded{pdf2svg \infile\space\outfile}},multi=false]{standalone}[2012/04/13]
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{positioning, shapes}
+\makeatletter
+\begin{document}
+  \begin{tikzpicture}[node distance=8cm, auto, thick]
+  \node (B) {\textbf{Big city}};
+  \node (L) [right of=B] {\textbf{Suburbs}};
+  \draw[->] (B) to[in=135,out=45] node{$\mathbf{0.3}$} (L);
+  \draw[->] (L) to[in=315,out=225] node{$\mathbf{0.2}$} (B);
+  \path (B) edge [loop left] node{$\mathbf{0.7}$} (B);
+  \path (L) edge [loop right] node{$\mathbf{0.8}$} (L);
+  \end{tikzpicture}
+\end{document}
+
+%
+% Blev her nødt til først at oversætte med pdflatex og efterfølgende
+% køre pdf2svg
+%
