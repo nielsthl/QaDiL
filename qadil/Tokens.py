@@ -4,7 +4,7 @@ NEVER_MATCHES = r'(?!x)x'
 
 class TokenType:
 
-    def __init__(self, name, rege):
+    def __init__(self, name, rege=None):
         self.name = name
         if rege:
             self.rege = re.compile(rege)
