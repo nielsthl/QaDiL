@@ -1,0 +1,27 @@
+\documentclass{article}
+
+\include{stddefs}
+\include{genericdefs}
+
+\newcommand{\red}[1]{\textcolor{red}{\textbf{#1}}}
+\newcommand{\green}[1]{\textcolor{green}{\textbf{#1}}}
+
+\begin{document}
+
+\chapterno{2}
+
+\chapter{Bibliography test}
+
+The bibliography subsystem looks for a file with the extension .bib, and then uses that as the bibliography file. It also takes care of translating the .bib file into a format that QaDiL internally can use, thus skipping the need for BibTeX or the like. All you need is a .bib file, and then QaDiL takes care of the rest when you compile a chapter as usual.
+
+This is a \footnote{footnote}{The cite pop ups use the same visuals as the footnotes! It looks very identical to the ones used by Wikipedia, with the drop shadow and the little animation!}.
+
+When you include \footnote{a link in a footnote...}{...then if you put your mouse inside the bubble here it will stick around, so that you actually have a chance to click the link. \url{Wikipedia link}{https://en.wikipedia.org/wiki/Levenshtein_distance}}
+
+You can cite like this \cite{matsumoto}, or if you want to mention a specific page, use \cite[p. 42]{matsumoto}.
+
+When you want to display the entire bibliography, you can do like so:
+
+\bibliography
+
+\end{document}
