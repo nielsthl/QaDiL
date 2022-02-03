@@ -12,9 +12,37 @@ var searchDict = new Map();
 var searchFilesNumLoaded = 0;
 var searchFilesRaw = {};
 var searchFilesTransformed = {};
+var searchFilenames = []; /* this variable gets populated in the searchDomReady function */
+var searchLocalStorageKey = 'QaDiLSearchData';
+var searchLocalStorageExpires = 604800000; /* 1 week in milliseconds */
 
-// this variable gets populated in the searchDomReady function
-var searchFilenames = [];
+function searchGetInternalStateJSON() {
+    var data = {
+        timeStamp              : new Date().getTime(),
+        searchDict             : Array.from(searchDict.entries()),
+        searchFilesTransformed : searchFilesTransformed
+    };
+
+    return JSON.stringify(data);
+}
+
+function searchSetInternalStateFromLocalStorage() {
+    var data = JSON.parse(window.localStorage.getItem(searchLocalStorageKey));
+    
+    searchDict = new Map(data.searchDict);
+    searchFilesTransformed = data.searchFilesTransformed;
+    searchHasBeenInit = true;
+}
+
+function searchShouldScrapeForData() {
+    var data = window.localStorage.getItem(searchLocalStorageKey);
+    
+    if (data === null)
+        return true;
+
+    var parsedData = JSON.parse(data);
+    return (new Date().getTime() - parsedData.timeStamp >= searchLocalStorageExpires);
+}
 
 function searchLoadFiles(finishedCallback) {
     searchFilenames.forEach(function(file) {
@@ -443,8 +471,16 @@ function searchSearch(keyphrase, allowSuggestions) {
 }
 
 function searchPrepareData(finishedCallback, progressCallback) {
-    if (searchHasBeenInit)
+    if (!searchShouldScrapeForData()) {
+        searchSetInternalStateFromLocalStorage();
         finishedCallback();
+        return;
+    }
+
+    if (searchHasBeenInit) {
+        finishedCallback();
+        return;
+    }
 
     searchLoadFiles(
         function() {
@@ -535,6 +571,11 @@ function searchShowInterface() {
         content.innerHTML = `
             <p></p>
         `;
+
+        if (searchShouldScrapeForData()) {
+            var data = searchGetInternalStateJSON();
+            window.localStorage.setItem(searchLocalStorageKey, data);
+        }
     }, function(progress) {
         var content = document.getElementById('searchDomContainerContent');
 
@@ -544,6 +585,12 @@ function searchShowInterface() {
     });
 
     var findButton = document.getElementById('searchFindButton');
+
+    searchInputText.addEventListener('keydown', function(event) {
+        if (event.key == 'Enter') {
+            document.getElementById('searchFindButton').click();
+        }
+    });
 
     findButton.addEventListener('click', function() {
         if (!searchHasBeenInit) {

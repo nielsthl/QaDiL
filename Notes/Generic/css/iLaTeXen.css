@@ -526,7 +526,7 @@ figcaption {
     color: #ca0020;
 }
 
-.bubblelabel + .bubblecontent {
+/*.bubblelabel + */.bubblecontent {
   z-index: 9999;
   opacity: 0;
   position: absolute;
@@ -562,6 +562,20 @@ figcaption {
   right: 50%;
   border-width: 10px 10px 0 0;
   border-style: solid;
+  border-color: transparent #fff;
+}
+
+.bubbleleft::before {
+  right: 92%;
+}
+
+.bubbleright::before {
+  right: 8%;
+}
+
+.bubbleflipped::before {
+  top: 0%;
+  transform: rotate(-135deg) translateY(7px);
   border-color: transparent #fff;
 }
 
@@ -838,6 +852,7 @@ body {
     letter-spacing: 0.02em;
     font-size:20px;
     text-align: justify;
+    overflow-x: hidden;
 }
 
 span[style*="transparent"] { /* https://github.com/nielsthl/QaDiL/issues/9 */
