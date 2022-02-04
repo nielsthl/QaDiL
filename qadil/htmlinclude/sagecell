@@ -6,8 +6,8 @@
   inputLocation: ".sage",
   evalButtonText: "Compute",
   linked: true,
-  languages : ["sage", "python"],
-  hide : ["permalink"] 
+  languages : ["sage", "python", "macaulay2"],
+  hide : ["permalink"]
   });
 </script>
 
