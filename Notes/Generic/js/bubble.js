@@ -4,7 +4,6 @@ var bubbleContents;
 var bubbleCaptures;
 var bubbleActive;
 var bubbleCheckerIsRunning = false;
-var bubbleBoundingBox = null;
 
 function distToBoundingBox(left, top, width, height, x, y) {
     /*      .                   .
@@ -94,24 +93,14 @@ function placeBubble(bubbleLabel, bubbleContent) {
 
     var allClasses = ['bubbleleft', 'bubbleright', 'bubbleflipped'];
     var offsets = [
-        // regular OK
         [- bubbleContent.offsetWidth / 2, - bubbleContent.offsetHeight - 6, []],
-
-        // left OK
         [- bubbleContent.offsetWidth * 0.08, - bubbleContent.offsetHeight - 6, ['bubbleleft']],
-
-        // left flipped OK
         [- bubbleContent.offsetWidth * 0.08, 38, ['bubbleleft', 'bubbleflipped']],
-
-        // right OK
         [- bubbleContent.offsetWidth * 0.92, - bubbleContent.offsetHeight - 6, ['bubbleright']],
-
-        // right flipped
         [- bubbleContent.offsetWidth * 0.92, 38, ['bubbleright', 'bubbleflipped']]
     ];
 
-    var start = 0;
-    for (var i = start; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++) {
         var [offsetX, offsetY, classes] = offsets[i];
 
         for (var className of allClasses) {
@@ -132,20 +121,6 @@ function placeBubble(bubbleLabel, bubbleContent) {
             break;
         }
     }
-
-    /*
-    bubbleBoundingBox.style.left = bubbleContent.offsetLeft + 'px';
-    bubbleBoundingBox.style.top = bubbleContent.offsetTop + 'px';
-    bubbleBoundingBox.style.width = bubbleContent.offsetWidth + 'px';
-    bubbleBoundingBox.style.height = bubbleContent.offsetHeight + 'px';
-    */
-
-    /*
-    bubbleBoundingBox.style.left = (window.scrollX + 5) + 'px';
-    bubbleBoundingBox.style.top = (window.scrollY + 5) + 'px';
-    bubbleBoundingBox.style.width = (window.innerWidth - 10) + 'px';
-    bubbleBoundingBox.style.height = (window.innerHeight - 10) + 'px';
-    */
 }
 
 function placeBubbles() {
@@ -188,19 +163,6 @@ function makeBubbleContentMouseOut(index, label, content) {
 }
 
 function initBubbles() {
-    bubbleBoundingBox = document.createElement('div');
-    bubbleBoundingBox.style.margin   = 0;
-    bubbleBoundingBox.style.padding  = 0;
-    bubbleBoundingBox.style.zIndex   = -1;
-    bubbleBoundingBox.style.position = 'absolute';
-    bubbleBoundingBox.style.left     = '5px';
-    bubbleBoundingBox.style.top      = '5px';
-    bubbleBoundingBox.style.width    = '50px';
-    bubbleBoundingBox.style.height   = '50px';
-    bubbleBoundingBox.style.border   = 'thin solid #f00';
-
-    document.body.appendChild(bubbleBoundingBox);
-
     bubbleLabels = document.querySelectorAll('.bubblelabel');
     bubbleContents = document.querySelectorAll('.bubblecontent');
     bubbleCaptures = new Array(bubbleLabels.length).fill(0);
