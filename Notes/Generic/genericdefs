@@ -9,6 +9,8 @@
 
 \includehtml{sidebar}
 
+\includehtml{search}
+
 \includehtml{hypothesis}
 
 \includehtml{sagecell}
@@ -22,3 +24,5 @@
 \includehtml{orderquiz}
 
 \includehtml{tikz}
+
+\includehtml{bubble}

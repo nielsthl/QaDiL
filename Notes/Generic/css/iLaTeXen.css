@@ -256,7 +256,13 @@ figcaption {
     margin-bottom: 20px;
 }
 
-
+.quizboxes { /* https://github.com/nielsthl/QaDiL/issues/7 */
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: -ms-flexbox;
+   display:         flex;
+   flex-wrap: wrap;
+}
 
 
 .Sagebutton:before {
@@ -514,31 +520,63 @@ figcaption {
   content: "(" counter(chapter) "." counter(envco) ") "; }
 
 
-/* Fodnoter */
+/* Bubble (\footnote and \cite) */
 
-.footnote {
+.bubblelabel {
     color: #ca0020;
 }
 
-.footnote .footnotetext {
-    z-index: -1;
-    opacity: 0;
-    position: fixed;
-    left: 15px;
-    bottom: 20px;
-    margin-left: 0px;
-    margin-right: 18px;
-    padding: 7px 10px;
-    border-radius: 4px;
-    border:1px solid #DCA;
-    color: black;
-    font-size: 15px;
-    background-color: #FEF6BB;
+/*.bubblelabel + */.bubblecontent {
+  z-index: 9999;
+  opacity: 0;
+  position: absolute;
+  left: 100px;
+  top: 0px;
+  margin-left: 0px;
+  margin-right: 18px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: #000;
+  font-size: 15px;
+  background-color: #fff;
+  min-width: 400px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.19));
+  width: 300px;
+  font-size: 75%;
+  transition: opacity 0.15s ease-in, transform 0.15s ease-in;
+  transform: translateY(-25px);
+  pointer-events: none; /* if this is not here then you can't select the text behind where the bubble is hiding */
 }
 
-.footnote:hover .footnotetext{
-    z-index: 9;
-    opacity: 1;
+.bubblelabel:hover + .bubblecontent, .bubblestick {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+  pointer-events: auto !important;
+}
+
+.bubblecontent::before {
+  transform: rotate(45deg) translateY(-8px);
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 50%;
+  border-width: 10px 10px 0 0;
+  border-style: solid;
+  border-color: transparent #fff;
+}
+
+.bubbleleft::before {
+  right: 92%;
+}
+
+.bubbleright::before {
+  right: 8%;
+}
+
+.bubbleflipped::before {
+  top: 0%;
+  transform: rotate(-135deg) translateY(7px);
+  border-color: transparent #fff;
 }
 
 
@@ -814,5 +852,20 @@ body {
     letter-spacing: 0.02em;
     font-size:20px;
     text-align: justify;
+    overflow-x: hidden;
 }
- 
+
+span[style*="transparent"] { /* https://github.com/nielsthl/QaDiL/issues/9 */
+  visibility: hidden;
+}
+
+.bibliography {
+    counter-reset: list;
+}
+.bibliography > li {
+    list-style: none;
+}
+.bibliography > li:before {
+    content: "[" counter(list) "] ";
+    counter-increment: list;
+}

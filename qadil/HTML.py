@@ -7,11 +7,12 @@ from uuid import uuid4
 from Writer import Writer
 from Enumerate import Enumerate
 from Interactive import Interactive
+from Bibliography import Bibliography
 
 csvquotechar = '@' # For write to toc file
 
 
-class HTML(Writer, Enumerate, Interactive):
+class HTML(Writer, Enumerate, Interactive, Bibliography):
 
     def emphasize(func):
     
@@ -31,6 +32,7 @@ class HTML(Writer, Enumerate, Interactive):
         Writer.__init__(self, inputstring)
         Enumerate.__init__(self)
         Interactive.__init__(self)
+        Bibliography.__init__(self)
 
         self.tocfile = io.open(filefirstname + ".toc", "w", encoding="utf8")
         self.lblfile = io.open(filefirstname + ".lbl", "w", encoding="utf8")
@@ -97,6 +99,7 @@ class HTML(Writer, Enumerate, Interactive):
             "align",
             "author",
             "bye",
+            "bibliography",
             "caption",
             "center",
             "changemargin",
@@ -106,6 +109,7 @@ class HTML(Writer, Enumerate, Interactive):
             "code",
             "conjecture",
             "corollary",
+            "cite",
             "definition",
             "documentclass",
             "document",
@@ -462,7 +466,7 @@ class HTML(Writer, Enumerate, Interactive):
     def footnote(self, obj):
         htxt = self.parsearg(obj, 0)
         fntxt = self.parsearg(obj, 1)
-        return  f'<span class="footnote">{htxt}<span class="footnotetext">{fntxt}</span></span>'
+        return  f'<span class="bubblelabel">{htxt}</span><span class="bubblecontent">{fntxt}</span>'
 
     def frameit(self, obj):
         return self.genericenvstar(obj, "frameit")
