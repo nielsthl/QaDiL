@@ -1,24 +1,20 @@
+INIT = ../../qadil/init.py
 COMPILER = ../../qadil/qadil.py
-CHAPTERDIR = .
 GENTOC = ../../qadil/gentoc.py
 GENLABELS = ../../qadil/genlbls.py
 
-all: book labels toc
-
-book: $(CHAPTERDIR)/index.html $(CHAPTERDIR)/intro.html $(CHAPTERDIR)/lineqs.html $(CHAPTERDIR)/matrices.html $(CHAPTERDIR)/whatisopt.html $(CHAPTERDIR)/euclidean.html $(CHAPTERDIR)/convexfunctions.html $(CHAPTERDIR)/diffseveral.html $(CHAPTERDIR)/hessian.html $(CHAPTERDIR)/convexoptimization.html
-
+all: book labels toc init
+book: index.html intro.html bibliography.html
+init:
+	python3 $(INIT) .
 labels:
-	python3 $(GENLABELS) $(CHAPTERDIR) 
-
+	python3 $(GENLABELS) .
 toc:
-	python3 $(GENTOC) $(CHAPTERDIR)
-
+	python3 $(GENTOC) .
 %.html: %.tex
 	python3 $(COMPILER) $<
-
 clean:
-	rm -f $(CHAPTERDIR)/*.html $(CHAPTERDIR)/*.toc $(CHAPTERDIR)/*.lbl $(CHAPTERDIR)/*~
-
+	rm -f *.html *.toc *.lbl *~
 zip:
-	zip -r IMO21.zip *.html img/ js/ css/
+	zip -r Generic.zip *.html img/ js/ css/
  

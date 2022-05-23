@@ -1,11 +1,14 @@
+INIT = ../../qadil/init.py
 COMPILER = ../../qadil/qadil.py
 GENTOC = ../../qadil/gentoc.py
 GENLABELS = ../../qadil/genlbls.py
 
-all: book labels toc
+all: book labels toc init
 book: index.html intro.html bibliography.html
+init:
+	python3 $(INIT) .
 labels:
-	python3 $(GENLABELS) . 
+	python3 $(GENLABELS) .
 toc:
 	python3 $(GENTOC) .
 %.html: %.tex
