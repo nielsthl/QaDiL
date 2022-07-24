@@ -4,10 +4,12 @@
 
 
 
-\includehtml{katex0.12.0}
+\includehtml{katex0.13.11}
 
 
 \includehtml{sidebar}
+
+\includehtml{search}
 
 \includehtml{hypothesis}
 
@@ -21,3 +23,7 @@
 \includehtml{quiz}
 \includehtml{orderquiz} 
 \includehtml{formatquiz} 
+
+\includehtml{tikz}
+
+\includehtml{bubble}
