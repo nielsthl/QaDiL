@@ -65,15 +65,44 @@ function boundingBoxIntersectionArea(box1, box2) {
 }*/
 
 function placeBubble(bubbleLabel, bubbleContent) {
-    var targetX = Math.round(bubbleLabel.offsetLeft + bubbleLabel.offsetWidth / 2);
-    var targetY = Math.round(bubbleLabel.offsetTop);
+    var spans = bubbleLabel.querySelectorAll('span');
+    var allWordsOnSameLine = true;
+    var prev;
+    
+    for (var i = 0; i < spans.length; i++) {
+        var span = spans[i];
 
-    if (targetX < 0.1 * window.innerWidth || 0.9 * window.innerWidth < targetX) {
-        // If the bubble appears top far to the left or right, we simply locate it where the user had
-        // their cursor. This will help us avoid the bubble appearing at a weird location if the footnote
-        // label spans multiple lines.
-        targetX = bubbleMouseX;
-        targetY = bubbleMouseY - 5;
+        if (i > 0 && span.offsetTop != prev) {
+            allWordsOnSameLine = false;
+            break;
+        }
+
+        prev = span.offsetTop;
+    }
+
+    var targetX, targetY;
+
+    if (allWordsOnSameLine) {
+        targetX = Math.round(bubbleLabel.offsetLeft + bubbleLabel.offsetWidth / 2);
+        targetY = Math.round(bubbleLabel.offsetTop);
+    } else {
+        var closestIndex = -1;
+        var closestDist = Number.POSITIVE_INFINITY;
+        
+        for (var i = 0; i < spans.length; i++) {
+            var span = spans[i];
+            var dist = distToBoundingBox(span.offsetLeft, span.offsetTop, span.offsetWidth, span.offsetHeight, bubbleMouseX, bubbleMouseY);
+
+            if (dist <= closestDist) {
+                closestIndex = i;
+                closestDist = dist;
+            }
+        }
+
+        var chosenSpan = spans[closestIndex];
+
+        targetX = Math.round(chosenSpan.offsetLeft + chosenSpan.offsetWidth / 2);
+        targetY = Math.round(chosenSpan.offsetTop);
     }
 
     var allClasses = ['bubbleleft', 'bubbleright', 'bubbleflipped'];
@@ -176,9 +205,9 @@ function initBubbles() {
     for (var i = 0; i < bubbleLabels.length; i++) {
         var bubbleLabel = bubbleLabels[i];
         var bubbleContent = bubbleContents[i];
-        /*var words = bubbleLabel.innerText.split(' ');
+        var words = bubbleLabel.innerText.split(' ');
         
-        bubbleLabel.innerHTML = words.map(x => `<span>${x}</span>`).join(' ');*/
+        bubbleLabel.innerHTML = words.map(x => `<span>${x}</span>`).join(' ');
         bubbleLabel.addEventListener('mouseover', makeBubbleLabelMouseOver(i, bubbleLabel, bubbleContent));
         bubbleLabel.addEventListener('mouseout', makeBubbleLabelMouseOut(i, bubbleLabel, bubbleContent));
         bubbleContent.addEventListener('mouseover', makeBubbleContentMouseOver(i, bubbleLabel, bubbleContent));
