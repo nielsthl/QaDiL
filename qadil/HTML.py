@@ -651,29 +651,43 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     @emphasize
     def remark(self, obj):
         return self.genericenv(obj, "remark")        
-    
-    
+
+
     def sage(self, obj):
         #env
+
+        options = []
+        
+        for ix, o in enumerate(obj.opts):
+            options.append(self.parseopt(obj, ix))
+
+        sageclass = "sage"
+
+        if "M2" in options:
+            sageclass = "sageM2"
+        if "python" in options:
+            sageclass = "sagepython"
+        if "R" in options:
+            sageclass = "sageR"
+            
         self.verbatim = True
-        html = ('<div class="sage">'
+        html = (f'<div class={sageclass}>'
                 '<script type="text/x-sage">'
                f'{self.parsechildren(obj.body)}'
                 '</script>'
                 '</div>'
                 )
         self.verbatim = False
-        if len(obj.opts) > 0:
-            optname = self.parseopt(obj, 0)
+
+        if "showhide" in options:
             name = "sage"
-            if optname == "showhide":
-                Cname = name.capitalize() # see genericenv
-                id = uuid4()
-                returnstr = (
-                    f'<a href="#{id}" class ="btn btn-default {Cname}button" data-toggle="collapse"></a>'
-                    f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
-                )
-                return f"{returnstr}{html}</div>"
+            Cname = name.capitalize() # see genericenv
+            id = uuid4()
+            returnstr = (
+                f'<a href="#{id}" class ="btn btn-default {Cname}button" data-toggle="collapse"></a>'
+                f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
+            )
+            return f"{returnstr}{html}</div>"
         return html
 
     def raw(self, text): # Hack for getting control sequences in toc right
