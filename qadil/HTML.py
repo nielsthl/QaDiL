@@ -248,34 +248,40 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         
         returnstr = f'<span id="{labelname}"></span>' # for html \href
 
-        '''
         options = []
         
         for ix, o in enumerate(obj.opts):
             options.append(self.parseopt(obj, ix))
-        '''
 
 
-        if len(obj.opts) > 0:
-            optname = self.parseopt(obj, 0)
-            if optname == "showhide":
-                Cname = name.capitalize() # css class = name (parameter) capitalized
-                id = uuid4()
-                returnstr += (
-                 f'<a class="{Cname}no" data-count="{labelno}"></a>'
-                 f'<a href="#{id}" class ="btn btn-default {Cname}button" '
-                 'data-toggle="collapse"></a>'
-                 f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
-                 f'  {html}'
-                  '</div>'
-                )
-                return returnstr
+        if "showhide" in options:
+            Cname = name.capitalize() # css class = name (parameter) capitalized
+            id = uuid4()
+            returnstr += (
+                f'<a class="{Cname}no" data-count="{labelno}"></a>'
+                f'<a href="#{id}" class ="btn btn-default {Cname}button" '
+                'data-toggle="collapse"></a>'
+                f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
+                f'  {html}'
+                '</div>'
+            )
+            return returnstr
 
-        return (
-            f'{returnstr}'
-            f'<div class="{name}" data-count="{labelno}">'
-            f'     {html}'
-              '</div>'
+        if len(options) > 0:
+            name = name.upper()
+            name += ' (' + options[0] + ')' # Hack for getting the likes of Theorem 1.1 (Pythagoras)
+            return (
+                f'{returnstr}'
+                f'<div class="genericenv" data-count="{labelno}" data-name="{name}">'
+                f'     {html}'
+                '</div>'
+            )
+        else:    
+            return (
+                f'{returnstr}'
+                f'<div class="{name}" data-count="{labelno}">'
+                f'     {html}'
+                '</div>'
             )
         
     def genericenvstar(self, obj, name):
