@@ -654,7 +654,7 @@ Optimization of a quadratic function as in \eqref{qp} is implemented below using
 interior point method and \url{exact line search}{https://en.wikipedia.org/wiki/Line_search}. See Section 10.5.1 of my book \url{Undergraduate Convexity}{https://www.worldscientific.com/worldscibooks/10.1142/8527} for further details. Only
 \texttt{python} with \texttt{numpy} is used.
 
-\begin{sage}
+\begin{sage}[python]
 import numpy as np
 
 def Newton(Q0, c0, A0, b0, xinit, eps):

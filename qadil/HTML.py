@@ -205,6 +205,39 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     def HTML(self):
         return self.LaTeXList(self.obj)
 
+
+    '''
+        sageclass = "sage"
+
+        if "M2" in options:
+            sageclass = "sageM2"
+        if "python" in options:
+            sageclass = "sagepython"
+        if "R" in options:
+            sageclass = "sageR"
+            
+        self.verbatim = True
+        html = (f'<div class={sageclass}>'
+                '<script type="text/x-sage">'
+               f'{self.parsechildren(obj.body)}'
+                '</script>'
+                '</div>'
+                )
+        self.verbatim = False
+
+        if "showhide" in options:
+            name = "sage"
+            Cname = name.capitalize() # see genericenv
+            id = uuid4()
+            returnstr = (
+                f'<a href="#{id}" class ="btn btn-default {Cname}button" data-toggle="collapse"></a>'
+                f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
+            )
+            return f"{returnstr}{html}</div>"
+        return html
+    '''
+
+    
     def genericenv(self, obj, name):
         self.updateenvlabel()
         self.envname = name
@@ -214,6 +247,15 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         html= self.parsechildren(obj.body)
         
         returnstr = f'<span id="{labelname}"></span>' # for html \href
+
+        '''
+        options = []
+        
+        for ix, o in enumerate(obj.opts):
+            options.append(self.parseopt(obj, ix))
+        '''
+
+
         if len(obj.opts) > 0:
             optname = self.parseopt(obj, 0)
             if optname == "showhide":
