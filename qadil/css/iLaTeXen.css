@@ -586,6 +586,10 @@ figcaption {
   border-color: transparent #fff;
 }
 
+.bubbleinnercontent {
+  overflow-x: auto;
+}
+
 .bubbleleft::before {
   right: 92%;
 }

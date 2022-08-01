@@ -469,7 +469,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     def footnote(self, obj):
         htxt = self.parsearg(obj, 0)
         fntxt = self.parsearg(obj, 1)
-        return  f'<span class="bubblelabel footnotecolor">{htxt}</span><span class="bubblecontent">{fntxt}</span>'
+        return  f'<span class="bubblelabel footnotecolor">{htxt}</span><span class="bubblecontent"><span class="bubbleinnercontent">{fntxt}</span></span>'
 
     def frameit(self, obj):
         return self.genericenvstar(obj, "frameit")

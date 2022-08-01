@@ -69,7 +69,7 @@ function placeBubble(bubbleLabel, bubbleContent) {
     var targetY = Math.round(bubbleLabel.offsetTop);
 
     if (targetX < 0.1 * window.innerWidth || 0.9 * window.innerWidth < targetX) {
-        // If the bubble appears top far to the left or right, we simply locate it where the user had
+        // If the bubble appears too far to the left or right, we simply locate it where the user had
         // their cursor. This will help us avoid the bubble appearing at a weird location if the footnote
         // label spans multiple lines.
         targetX = bubbleMouseX;
@@ -78,6 +78,7 @@ function placeBubble(bubbleLabel, bubbleContent) {
 
     var allClasses = ['bubbleleft', 'bubbleright', 'bubbleflipped'];
     var layouts = [
+        // These layouts are in prioritized order
         [- bubbleContent.offsetWidth * 0.50, - bubbleContent.offsetHeight - 6, []],
         [- bubbleContent.offsetWidth * 0.50, 38,                               ['bubbleflipped']],
         [- bubbleContent.offsetWidth * 0.95, - bubbleContent.offsetHeight - 6, ['bubbleright']],
@@ -176,9 +177,7 @@ function initBubbles() {
     for (var i = 0; i < bubbleLabels.length; i++) {
         var bubbleLabel = bubbleLabels[i];
         var bubbleContent = bubbleContents[i];
-        /*var words = bubbleLabel.innerText.split(' ');
         
-        bubbleLabel.innerHTML = words.map(x => `<span>${x}</span>`).join(' ');*/
         bubbleLabel.addEventListener('mouseover', makeBubbleLabelMouseOver(i, bubbleLabel, bubbleContent));
         bubbleLabel.addEventListener('mouseout', makeBubbleLabelMouseOut(i, bubbleLabel, bubbleContent));
         bubbleContent.addEventListener('mouseover', makeBubbleContentMouseOver(i, bubbleLabel, bubbleContent));
@@ -239,8 +238,8 @@ function refBubbleEnvKey(page, envId) {
     return `${page}-env${envId}`;
 }
 
-function refBubbleEquKey(page, envId) {
-    return `${page}-equ${envId}`;
+function refBubbleEquKey(page, equId) {
+    return `${page}-equ${equId}`;
 }
 
 function refBubbleFetchPage(page) {
@@ -258,6 +257,18 @@ function refBubbleFetchExternalEnv(page, envId) {
     
     var list = refBubbleFetchPage(page);
     list.push('env' + envId);
+
+    return 'Loading...';
+}
+
+function refBubbleFetchExternalEqu(page, equId) {
+    var key = refBubbleEquKey(page, equId);
+
+    if (refBubbleData.has(key))
+        return refBubbleData.get(key);
+    
+    var list = refBubbleFetchPage(page);
+    list.push('equ' + equId);
 
     return 'Loading...';
 }
@@ -308,19 +319,40 @@ function refBubbleFetchPages() {
             var lookup = refBubblePagesToFetch.get(fileName);
 
             for (var key of lookup) {
-                var number = key.replace('env', '');
-                var html = refBubbleGetEnvBubbleHTML(fragment, number);
-                var index = 0;
+                var kind = key.substr(0, 3);
 
-                while (true) {
-                    var htmlKey = 'refbubble-env' + number + '-inst' + index;
-                    var element = document.getElementById(htmlKey);
+                if (kind == 'env') {
+                    var number = key.replace('env', '');
+                    var html = refBubbleGetEnvBubbleHTML(fragment, number);
+                    var index = 0;
 
-                    if (!element)
-                        break;
+                    while (true) {
+                        var htmlKey = 'refbubble-env' + number + '-inst' + index;
+                        var element = document.getElementById(htmlKey);
 
-                    element.innerHTML = html;
-                    index++;
+                        if (!element)
+                            break;
+
+                        element.innerHTML = html;
+                        index++;
+                    }
+                }
+
+                if (kind == 'equ') {
+                    var number = key.replace('equ', '');
+                    var html = refBubbleGetEquBubbleHTML(fragment, number, true);
+                    var index = 0;
+
+                    while (true) {
+                        var htmlKey = 'refbubble-equ' + number + '-inst' + index;
+                        var element = document.getElementById(htmlKey);
+
+                        if (!element)
+                            break;
+
+                        element.innerHTML = html;
+                        index++;
+                    }
                 }
             }
 
@@ -373,10 +405,23 @@ function refBubbleGetEnvBubbleHTML(model, envId) {
     return '<div class="' + className + '" data-count="' + envId + '">' + elementContent + '</div>';
 }
 
+function refBubbleGetEquBubbleHTML(model, equId, isExternal) {
+    if (!isExternal) {
+        var elementToCopy = model.querySelector(`*[id="equ${equId}"] + div`);
+        return elementToCopy.innerHTML;
+    } else {
+        var texTag = model.querySelector(`*[id="equ${equId}"] + div + script`);
+        var texStr = texTag.innerHTML.toString();
+        var texNoTag = texStr.replace(/\\tag\{(.*?)\}/, '');
+        return `<div class="math"></div><script type="math/tex; mode=display">${texNoTag}</script>`;
+    }
+}
+
 function setupRefBubbles() {
     var currentPage = refBubbleGetFilename(document.location.href);
     var links = document.querySelectorAll('a');
-    var instanceCounter = new Map();
+    var instanceCounterEnv = new Map();
+    var instanceCounterEqu = new Map();
 
     for (var i = 0; i < links.length; i++) {
         var link = links[i];
@@ -385,38 +430,53 @@ function setupRefBubbles() {
             var fileName = refBubbleGetFilename(link.href);
             var envId = refBubbleGetEnvId(link.href);
             var content = document.createElement('div');
+            var innerContent = document.createElement('div');
 
-            if (!instanceCounter.has(envId)) {
-                instanceCounter.set(envId, 0);
+            if (!instanceCounterEnv.has(envId)) {
+                instanceCounterEnv.set(envId, 0);
             } else {
-                instanceCounter.set(envId, instanceCounter.get(envId) + 1);
+                instanceCounterEnv.set(envId, instanceCounterEnv.get(envId) + 1);
             }
 
-            content.id = 'refbubble-env' + envId + '-inst' + instanceCounter.get(envId);
+            innerContent.id = 'refbubble-env' + envId + '-inst' + instanceCounterEnv.get(envId);
             
             link.classList.add('bubblelabel');
             content.classList.add('bubblecontent');
+            innerContent.classList.add('bubbleinnercontent');
+
+            content.appendChild(innerContent);
 
             if (fileName == currentPage) {
-                content.innerHTML = refBubbleGetEnvBubbleHTML(document, envId);
+                innerContent.innerHTML = refBubbleGetEnvBubbleHTML(document, envId);
             } else {
-                content.innerHTML = refBubbleFetchExternalEnv(fileName, envId);
+                innerContent.innerHTML = refBubbleFetchExternalEnv(fileName, envId);
             }
 
             link.parentNode.insertBefore(content, link.nextSibling);
         } else if (link.href.indexOf('#equ') >= 0) {
+            var fileName = refBubbleGetFilename(link.href);
             var equId = refBubbleGetEquId(link.href);
             var content = document.createElement('div');
+            var innerContent = document.createElement('div');
+
+            if (!instanceCounterEqu.has(equId)) {
+                instanceCounterEqu.set(equId, 0);
+            } else {
+                instanceCounterEqu.set(equId, instanceCounterEqu.get(equId) + 1);
+            }
+
+            innerContent.id = 'refbubble-equ' + equId + '-inst' + instanceCounterEqu.get(equId);
             
             link.classList.add('bubblelabel');
             content.classList.add('bubblecontent');
+            innerContent.classList.add('bubbleinnercontent');
 
-            if (refBubbleGetFilename(link.href) == currentPage) {
-                var elementToCopy = document.querySelector(`*[id="equ${equId}"] + div`);
+            content.appendChild(innerContent);
 
-                content.innerHTML = elementToCopy.innerHTML;
+            if (fileName == currentPage) {
+                innerContent.innerHTML = refBubbleGetEquBubbleHTML(document, equId, false);
             } else {
-                content.innerHTML = 'Equation from external page'; // TODO
+                innerContent.innerHTML = refBubbleFetchExternalEqu(fileName, equId);
             }
 
             link.parentNode.insertBefore(content, link.nextSibling);
