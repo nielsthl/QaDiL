@@ -167,7 +167,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         functions("itemize", "enumerate")
 
         # Inherited functions (Interative)
-        functions("quiz", "orderquiz", "paraquiz")
+        functions("quiz", "orderquiz", "paraquiz", "formatquiz")
 
 
 
@@ -283,9 +283,12 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     
     def alignstar(self, obj):
         # env
-        return self.KaTeX_display(\
+        self.mathmode = True
+        content = self.KaTeX_display(\
         f"\\begin{{aligned}}{self.parsechildren(obj.body)}\\end{{aligned}}"\
         )
+        self.mathmode = False
+        return content
 
     def bye(self, obj):
         return ""
@@ -466,7 +469,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     def footnote(self, obj):
         htxt = self.parsearg(obj, 0)
         fntxt = self.parsearg(obj, 1)
-        return  f'<span class="bubblelabel">{htxt}</span><span class="bubblecontent">{fntxt}</span>'
+        return  f'<span class="bubblelabel footnotecolor">{htxt}</span><span class="bubblecontent"><span class="bubbleinnercontent">{fntxt}</span></span>'
 
     def frameit(self, obj):
         return self.genericenvstar(obj, "frameit")

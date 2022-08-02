@@ -1,4 +1,5 @@
 from uuid import uuid4
+import re
 
 class Interactive:
 
@@ -76,7 +77,7 @@ class Interactive:
             returnstr += '<div class="row quizquestion">'
             returnstr += question
             returnstr += '</div>'
-            returnstr += '<div class="row">'
+            returnstr += '<div class="row quizboxes">'
             for index, a in enumerate(answers):
                 v = truefalse[index]
                 returnstr += f'<div class="col-xs-5 quizanswer" datav="{v}">{a}</div>'
@@ -244,12 +245,12 @@ class Interactive:
             for index, case in enumerate(cases):
                 caseshtml += f'<span class="orderquizfeedback hidden" datav="{sexpr[index]}">'
                 if truefalse[index] == 'T':
-                    caseshtml += '<b class="correct"></b>'
+                    caseshtml += '<b class="correct">Korrekt!</b>'
                 else:
-                    caseshtml += '<b class="wrong"></b>'
+                    caseshtml += '<b class="wrong">Forkert.</b>'
                 caseshtml += ' ' + case + '</span>'
             # Add default
-            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong"></b> {default}</span>'
+            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
                     
 
             rightsidehtml = ""
@@ -394,12 +395,12 @@ class Interactive:
             for index, case in enumerate(cases):
                 caseshtml += f'<span class="orderquizfeedback hidden" datav="{sexpr[index]}">'
                 if truefalse[index] == 'T':
-                    caseshtml += '<b class="correct"></b>'
+                    caseshtml += '<b class="correct">Korrekt!</b>'
                 else:
-                    caseshtml += '<b class="wrong"></b>'
+                    caseshtml += '<b class="wrong">Forkert.</b>'
                 caseshtml += ' ' + case + '</span>'
             # Add default
-            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong"></b> {default}</span>'
+            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
 
 
             # Patch returnstring
@@ -418,3 +419,207 @@ class Interactive:
             returnstr += '</div>'
 
             return returnstr
+
+    def formatquiz(self, obj):
+        bc = iter(obj.body)
+
+        # Locate \question
+        try:
+            c = self.nextskipblank(bc)
+            while(not self.testcs(c, "question")):
+                c = next(bc)
+        except StopIteration:
+            return "<br><b>Orderquiz contains no question</b><br>" # No \question
+
+        question = ""
+
+        # Here c = \question
+
+        self.quizno += 1
+
+        c = next(bc)
+        try:
+            while(not self.testcs(c, "answer")):
+                question += self.ltxaction[self.typename(c)](c)
+                c = next(bc)
+        except StopIteration:
+            return "<br><b>Formatquiz contain no answer</b><br>"
+
+        # Read answer
+
+        matrixPosI = 0
+        matrixPosJ = 0
+        matrixConstants = []
+        matrixBoundVariables = []
+
+        regex = r'^-?\d+$|^-?\d+\.\d*$'
+        regc = re.compile(regex, re.DOTALL)
+
+        hasSuchThat = True
+
+        try:
+            while(not self.testcs(c, "suchthat")):
+                name = self.typename(c)
+        
+                # move around in the matrix
+                if name == "Symbol" and c.content == "&":
+                    matrixPosJ += 1
+        
+                if self.testcs(c, "\\"):
+                    matrixPosI += 1
+                    matrixPosJ = 0
+
+                # detect bound variables
+                if self.testcs(c, "var"):
+                    varName = ""
+
+                    it = iter(c.args)
+                    node = next(it)
+                    word = node.children[0]
+                    
+                    if self.typename(word) == 'Word':
+                        varName = word.content
+
+                    matrixBoundVariables.append((varName, matrixPosI, matrixPosJ))
+                    # print("Got bound variable " + varName + " at " + str(matrixPosI) + "," + str(matrixPosJ))
+
+                # detect constants
+                if self.typename(c) == 'Word' and c.content != '-':
+                    value = c.content
+                    if regc.match(value):
+                        # print("Got constant " + value + " at " + str(matrixPosI) + "," + str(matrixPosJ))
+                        matrixConstants.append((value, matrixPosI, matrixPosJ))
+                    else:
+                        return "<br><b>Constant in formatquiz answer matrix is not a number</b><br>"
+        
+                c = next(bc)
+
+        except StopIteration:
+            hasSuchThat = False
+
+        suchthats = []
+
+        if hasSuchThat:
+            try:
+                while True:
+                    if self.testcs(c, "suchthat"):
+                        suchthats.append('')
+                    elif self.typename(c) != 'NewLine':
+                        suchthats[-1] += self.ltxaction[self.typename(c)](c)
+
+                    c = next(bc)
+
+            except StopIteration:
+                pass
+
+        # print("Suchthats: " + str(suchthats))
+
+        matrixM = matrixPosI + 1
+        matrixN = matrixPosJ + 1
+
+        # make JS program
+
+        for constant in matrixConstants:
+            value, i, j = constant
+            suchthats.append('equals(matrix[' + str(i) + '][' + str(j) + '], ' + str(value) + ')')
+
+        jsProgram = 'function formatQuizProgram' + str(self.quizno) + '(matrix) {\n'
+        jsProgram += '   if (matrixUID(matrix) != matrixUID(' + str(matrixM) + ', ' + str(matrixN) + ')) return false;\n'
+        
+        for boundVariable in matrixBoundVariables:
+            name, i, j = boundVariable
+            jsProgram += '   var ' + name + ' = matrix[' + str(i) + '][' + str(j) + '];\n'
+        
+        jsProgram += '   var result = true;\n'
+
+        for suchthat in suchthats:
+            jsProgram += '   result = result && (' + suchthat + ');\n'
+        
+        jsProgram += '   return result;\n'
+        jsProgram += '}\n'
+
+        # make HTML
+
+        qid = "quiz" + str(self.quizno)
+
+        outputHTML =  '<div id="' + qid + '">'
+        outputHTML += '    <div class="row quizquestion">'
+        outputHTML += '        ' + question
+        outputHTML += '    </div>'
+        outputHTML += '    <div class="row formatquizanswer">'
+        outputHTML += '        <b>Dit svar:</b> Det er en'
+        outputHTML += '        <select class="formatquiz-type" onchange="formatQuizChangeType(' + str(self.quizno) + ')">'
+        outputHTML += '            <option value="none" selected></option>'
+        outputHTML += '            <option value="scalar">Skalar</option>'
+        outputHTML += '            <option value="columnvector">Søjlevektor</option>'
+        outputHTML += '            <option value="rowvector">Rækkevektor</option>'
+        outputHTML += '            <option value="matrix">Matrix</option>'
+        outputHTML += '        </select>'
+        outputHTML += '        <span class="formatquiz-scalar hidden">'
+        outputHTML += '            som er'
+        outputHTML += '        </span>'
+        outputHTML += '        <span class="formatquiz-vector hidden">'
+        outputHTML += '            med'
+        outputHTML += '            <select onchange="formatQuizChangeMatrixSize(' + str(self.quizno) + ')">'
+        outputHTML += '                <option value="none" selected></option>'
+        outputHTML += '                <option value="1">1</option>'
+        outputHTML += '                <option value="2">2</option>'
+        outputHTML += '                <option value="3">3</option>'
+        outputHTML += '                <option value="4">4</option>'
+        outputHTML += '            </select>'
+        outputHTML += '            indgange'
+        outputHTML += '        </span>'
+        outputHTML += '        <span class="formatquiz-matrix hidden">'
+        outputHTML += '            med størrelse'
+        outputHTML += '            <select onchange="formatQuizChangeMatrixSize(' + str(self.quizno) + ')" class="matrixrows">'
+        outputHTML += '                <option value="none" selected></option>'
+        outputHTML += '                <option value="1">1</option>'
+        outputHTML += '                <option value="2">2</option>'
+        outputHTML += '                <option value="3">3</option>'
+        outputHTML += '                <option value="4">4</option>'
+        outputHTML += '            </select>'
+        outputHTML += '            x'
+        outputHTML += '            <select onchange="formatQuizChangeMatrixSize(' + str(self.quizno) + ')" class="matrixcolumns">'
+        outputHTML += '                <option value="none" selected></option>'
+        outputHTML += '                <option value="1">1</option>'
+        outputHTML += '                <option value="2">2</option>'
+        outputHTML += '                <option value="3">3</option>'
+        outputHTML += '                <option value="4">4</option>'
+        outputHTML += '            </select>'
+        outputHTML += '        </span>'
+        outputHTML += '        <span class="formatquiz-numbers hidden">'
+        outputHTML += '            givet ved'
+        outputHTML += '            <table class="number-table">'
+        outputHTML += '            </table>'
+        outputHTML += '            <input type="button" value="Check" onclick="formatQuizCheckAnswer(' + str(self.quizno) + ', formatQuizProgram' + str(self.quizno) + ')">'
+        outputHTML += '            <span class="result">'
+        outputHTML += '                <span class="number-errors">'
+        outputHTML += '                </span>'
+        outputHTML += '                <span class="correct hidden">'
+        outputHTML += '                    <b>Korrekt!</b>'
+        outputHTML += '                </span>'
+        outputHTML += '                <span class="wrong hidden">'
+        outputHTML += '                    <b>Forkert.</b>'
+        outputHTML += '                </span>'
+        outputHTML += '            </span>'
+        outputHTML += '            <script type="text/javascript">'
+        outputHTML += '                ' + jsProgram
+        outputHTML += '            </script>'
+        outputHTML += '        </span>'
+        outputHTML += '    </div>'
+        outputHTML += '</div>'
+
+        #try:
+        #    while True:
+        #        c = next(bc)
+        #        print(self.typename(c), ": ", str(c))
+        #except StopIteration:
+        #    print("done")
+        #    print("------")
+
+        return outputHTML
+
+
+
+
+

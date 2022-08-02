@@ -53,7 +53,7 @@ class Bibliography:
             optname = self.parseopt(obj, 0)
             display += f', {optname}'
 
-        return f'<span class="bubblelabel">[{display}]</span><span class="bubblecontent">[{index}]: {content}</span>'
+        return f'<span class="bubblelabel">[{display}]</span><span class="bubblecontent"><span class="bubbleinnercontent">[{index}]: {content}</span></span>'
 
     def bibliography(self, obj):
         if not self.bibfileok:

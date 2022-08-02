@@ -1,13 +1,33 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=PT+Serif|PT+Serif+Caption|PT+Mono|Source+Sans+Pro:200,400");
 
+.conjecture {
+  display: block;
+  margin: 12px 0;
+/*  background-color: #d4debf; */
+  padding: 10px;
+/*  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc; */
+}
+
+
+.conjecture:before {
+    display:block;
+    content: "(" attr(data-count) ") COROLLARY.";
+    font-weight: bold;
+    font-style: normal;
+    margin-bottom: 20px;
+}
+
+
 .corollary {
   display: block;
   margin: 12px 0;
 /*  background-color: #d4debf; */
   padding: 10px;
 /*  border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -27,7 +47,7 @@
 /*  background-color: #d4debf; */
   padding: 10px;
 /*  border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -69,7 +89,7 @@
 /*  background-color: #d4debf; */
   padding: 5px; 
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc;
 }
 
@@ -100,7 +120,7 @@
   margin: 12px 0;
   padding: 10px;
 /*  border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -123,7 +143,7 @@ figcaption {
     margin: 12px 0;
     padding: 10px;
 /*    border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     border-color: #ccc; */
 }
 
@@ -141,7 +161,7 @@ figcaption {
   margin: 12px 0;
   padding: 10px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc;
  }
 
@@ -151,7 +171,7 @@ figcaption {
   font-style: normal;
   border-style: solid;
   border-color: #ccc;
-  border-width: 2px;
+  border-width: 1px;
   padding: 10px; }
 
 
@@ -224,7 +244,7 @@ figcaption {
   margin: 12px 0;
   padding: 10px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc;
 }
 
@@ -236,7 +256,30 @@ figcaption {
     margin-bottom: 20px;
 }
 
+.quizboxes { /* https://github.com/nielsthl/QaDiL/issues/7 */
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: -ms-flexbox;
+   display:         flex;
+   flex-wrap: wrap;
+}
 
+
+.formatquiz-numbers .number-field {
+  width: 80px;
+}
+
+.formatquizanswer .hidden {
+  display: none;
+}
+
+.formatquiz-numbers .result .correct {
+  color: green;
+}
+
+.formatquiz-numbers .result .wrong {
+  color: red;
+}
 
 
 .Sagebutton:before {
@@ -266,7 +309,7 @@ figcaption {
   margin: 12px 0;
 /*  padding: 10px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -283,7 +326,7 @@ figcaption {
   margin: 12px 0;
   padding: 20px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc;
 }
 
@@ -304,7 +347,7 @@ figcaption {
 /*  background-color: #d4debf; */
   padding: 10px;
 /*  border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -331,7 +374,7 @@ figcaption {
   margin: 12px 0;
   padding: 10px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc;
 }
 
@@ -360,7 +403,7 @@ figcaption {
 /*  background-color: #d4debf; 
   padding: 10px;
    border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -379,7 +422,7 @@ figcaption {
 /*  background-color: #d4debf;
   padding: 10px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #ccc; */
 }
 
@@ -420,8 +463,7 @@ figcaption {
   border: solid 3px;
   border-radius: 8px;
   padding: 20px;
-  height: 150px;
-  /* height: 200px; */
+  margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
   background-color: white; }
@@ -492,32 +534,74 @@ figcaption {
 .Sage::before {
   content: "(" counter(chapter) "." counter(envco) ") "; }
 
+/* Bubble (\footnote and \cite) */
 
-/* Fodnoter */
-
-.footnote {
-    color: #ca0020;
+.footnotecolor {
+    color: #23527c;
 }
 
-.footnote .footnotetext {
-    z-index: -1;
-    opacity: 0;
-    position: fixed;
-    left: 15px;
-    bottom: 20px;
-    margin-left: 0px;
-    margin-right: 18px;
-    padding: 7px 10px;
-    border-radius: 4px;
-    border:1px solid #DCA;
-    color: black;
-    font-size: 15px;
-    background-color: #FEF6BB;
+/*.labelref {
+  color: #337ab7 !important;
+}
+.labelref:hover, .labelref:focus {
+  color: #23527c !important;
+}*/
+
+/*.bubblelabel + */.bubblecontent {
+  z-index: 9999;
+  opacity: 0;
+  position: absolute;
+  left: 100px;
+  top: 0px;
+  margin-left: 0px;
+  margin-right: 18px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: #000;
+  font-size: 15px;
+  background-color: #fff;
+  min-width: 400px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.19));
+  width: 300px;
+  font-size: 75%;
+  transition: opacity 0.15s ease-in, transform 0.15s ease-in;
+  transform: translateY(-25px);
+  pointer-events: none; /* if this is not here then you can't select the text behind where the bubble is hiding */
 }
 
-.footnote:hover .footnotetext{
-    z-index: 9;
-    opacity: 1;
+.bubblelabel:hover + .bubblecontent, .bubblestick {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+  pointer-events: auto !important;
+}
+
+.bubblecontent::before {
+  transform: rotate(45deg) translateY(-8px);
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 50%;
+  border-width: 10px 10px 0 0;
+  border-style: solid;
+  border-color: transparent #fff;
+}
+
+.bubbleinnercontent {
+  overflow-x: auto;
+}
+
+.bubbleleft::before {
+  right: 92%;
+}
+
+.bubbleright::before {
+  right: 8%;
+}
+
+.bubbleflipped::before {
+  top: 0%;
+  transform: rotate(-135deg) translateY(7px);
+  border-color: transparent #fff;
 }
 
 
@@ -770,7 +854,7 @@ li a {
     margin-left: 10%;
     margin-right: 10%;
 }
-
+ 
 .extendedwidth {
     width: 20%;
     }
@@ -793,5 +877,20 @@ body {
     letter-spacing: 0.02em;
     font-size:20px;
     text-align: justify;
+    overflow-x: hidden;
 }
- 
+
+span[style*="transparent"] { /* https://github.com/nielsthl/QaDiL/issues/9 */
+  visibility: hidden;
+}
+
+.bibliography {
+    counter-reset: list;
+}
+.bibliography > li {
+    list-style: none;
+}
+.bibliography > li:before {
+    content: "[" counter(list) "] ";
+    counter-increment: list;
+}
