@@ -253,7 +253,57 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         for ix, o in enumerate(obj.opts):
             options.append(self.parseopt(obj, ix))
 
+        # Adjust name with parameters != "showhide":
 
+        name = name.upper()
+        namec = name.capitalize()
+        for o in options:
+            if not o in ["showhide", "emph"]:
+                name += ' (' + o + ')'
+                namec += ' (' + o + ')'
+
+        # Button?
+                
+        if "showhide" in options:
+            id = uuid4()
+            returnstr += (
+                f'<a class="Genericenvno" data-count="{labelno}" data-name="{name}"></a>'
+                f'<a href="#{id}" class ="btn btn-default Genericenvbutton" '
+                f'data-toggle="collapse" data-name="{namec}"></a>'
+                f'<div id={id} class = "collapse Genericenvbutton {self.buttonsclassname}">'
+                f'  {html}'
+                '</div>'
+            )
+            return returnstr
+
+        return (
+                f'{returnstr}'
+                f'<div class="genericenv" data-count="{labelno}" data-name="{name}">'
+                f'     {html}'
+                '</div>'
+        ) 
+        
+    '''
+        if (options == []):
+            return (
+                f'{returnstr}'
+                f'<div class="{name}" data-count="{labelno}">'
+                f'     {html}'
+                '</div>'
+            )
+
+        # No button?
+        
+        if not "showhide" in options:
+            name = name.upper()
+            name += ' (' + options[0] + ')' # Hack for getting the likes of Theorem 1.1 (Pythagoras)
+            return (
+                f'{returnstr}'
+                f'<div class="genericenv" data-count="{labelno}" data-name="{name}">'
+                f'     {html}'
+                '</div>'
+            )
+        
         if "showhide" in options:
             Cname = name.capitalize() # css class = name (parameter) capitalized
             id = uuid4()
@@ -283,7 +333,8 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
                 f'     {html}'
                 '</div>'
             )
-        
+    '''
+    
     def genericenvstar(self, obj, name):
         html = self.parsechildren(obj.body)
         if len(obj.opts) > 0:
