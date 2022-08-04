@@ -382,7 +382,7 @@ function refBubbleGetEnvBubbleHTML(model, envId) {
     try {
         className = elementToCopy.classList.item(0);
 
-        if (className == 'Exerciseno') {
+        if (className == 'Exerciseno' || className == 'Genericenvno' || className == 'Exampleno' || className == 'Theoremno') {
             var buttonElement = model.querySelector(`*[data-count="${envId}"] + a`);
             var divId = refBubbleGetHashtag(buttonElement.href);
             
