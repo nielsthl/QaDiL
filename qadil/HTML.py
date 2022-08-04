@@ -214,27 +214,43 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         html= self.parsechildren(obj.body)
         
         returnstr = f'<span id="{labelname}"></span>' # for html \href
-        if len(obj.opts) > 0:
-            optname = self.parseopt(obj, 0)
-            if optname == "showhide":
-                Cname = name.capitalize() # css class = name (parameter) capitalized
-                id = uuid4()
-                returnstr += (
-                 f'<a class="{Cname}no" data-count="{labelno}"></a>'
-                 f'<a href="#{id}" class ="btn btn-default {Cname}button" '
-                 'data-toggle="collapse"></a>'
-                 f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
-                 f'  {html}'
-                  '</div>'
-                )
-                return returnstr
+
+        options = []
+        
+        for ix, o in enumerate(obj.opts):
+            options.append(self.parseopt(obj, ix))
+
+        # Adjust name with parameters != "showhide":
+
+        name = name.upper()
+        namec = name.capitalize()
+        for o in options:
+            if not o in ["showhide", "emph"]:
+                name += ' (' + o + ')'
+                namec += ' (' + o + ')'
+
+        # Button?
+                
+        if "showhide" in options:
+            id = uuid4()
+            returnstr += (
+                f'<a class="Genericenvno" data-count="{labelno}" data-name="{name}"></a>'
+                f'<a href="#{id}" class ="btn btn-default Genericenvbutton" '
+                f'data-toggle="collapse" data-name="{namec}"></a>'
+                f'<div id={id} class = "collapse Genericenvbutton {self.buttonsclassname}">'
+                f'  {html}'
+                '</div>'
+            )
+            return returnstr
 
         return (
-            f'{returnstr}'
-            f'<div class="{name}" data-count="{labelno}">'
-            f'     {html}'
-              '</div>'
-            )
+                f'{returnstr}'
+                f'<div class="genericenv" data-count="{labelno}" data-name="{name}">'
+                f'     {html}'
+                '</div>'
+        ) 
+
+
         
     def genericenvstar(self, obj, name):
         html = self.parsechildren(obj.body)
@@ -654,30 +670,44 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     @emphasize
     def remark(self, obj):
         return self.genericenv(obj, "remark")        
-    
-    
+
     def sage(self, obj):
         #env
+
+        options = []
+        
+        for ix, o in enumerate(obj.opts):
+            options.append(self.parseopt(obj, ix))
+
+        sageclass = "sage"
+
+        if "M2" in options:
+            sageclass = "sageM2"
+        if "python" in options:
+            sageclass = "sagepython"
+        if "R" in options:
+            sageclass = "sageR"
+            
         self.verbatim = True
-        html = ('<div class="sage">'
+        html = (f'<div class={sageclass}>'
                 '<script type="text/x-sage">'
                f'{self.parsechildren(obj.body)}'
                 '</script>'
                 '</div>'
                 )
         self.verbatim = False
-        if len(obj.opts) > 0:
-            optname = self.parseopt(obj, 0)
+
+        if "showhide" in options:
             name = "sage"
-            if optname == "showhide":
-                Cname = name.capitalize() # see genericenv
-                id = uuid4()
-                returnstr = (
-                    f'<a href="#{id}" class ="btn btn-default {Cname}button" data-toggle="collapse"></a>'
-                    f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
-                )
-                return f"{returnstr}{html}</div>"
+            Cname = name.capitalize() # see genericenv
+            id = uuid4()
+            returnstr = (
+                f'<a href="#{id}" class ="btn btn-default {Cname}button" data-toggle="collapse"></a>'
+                f'<div id={id} class = "collapse {Cname} {self.buttonsclassname}">'
+            )
+            return f"{returnstr}{html}</div>"
         return html
+
 
     def raw(self, text): # Hack for getting control sequences in toc right
         new_text=""
