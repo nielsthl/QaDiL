@@ -5,6 +5,7 @@ import shutil
 import glob
 
 chapterdir = sys.argv[1]
+scriptdir = sys.path[0]
 
 def copy_directory_if_dest_does_not_exist(sourceDir, destinationDir):
     if os.path.isdir(destinationDir):
@@ -17,5 +18,5 @@ def copy_directory_if_dest_does_not_exist(sourceDir, destinationDir):
         fileName = m.group(0)
         shutil.copyfile(fullName, destinationDir + '/' + fileName)
 
-copy_directory_if_dest_does_not_exist('../../qadil/js', chapterdir + '/js')
-copy_directory_if_dest_does_not_exist('../../qadil/css', chapterdir + '/css')
+copy_directory_if_dest_does_not_exist(scriptdir + '/js', chapterdir + '/js')
+copy_directory_if_dest_does_not_exist(scriptdir + '/css', chapterdir + '/css')
