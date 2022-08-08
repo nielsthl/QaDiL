@@ -222,19 +222,45 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
 
         # Adjust name with parameters != "showhide":
 
-        name = name.upper()
+        nameu = name.upper()
         namec = name.capitalize()
         for o in options:
             if not o in ["showhide", "emph"]:
-                name += ' (' + o + ')'
+                nameu += ' (' + o + ')'
                 namec += ' (' + o + ')'
 
         # Button?
-                
+
+        # Temporary (clunky) fix for Issue #26, localization break css.
+
+        if options == ["showhide"]:
+            id = uuid4()
+            returnstr += (
+                 f'<a class="{namec}no" data-count="{labelno}"></a>'
+                 f'<a href="#{id}" class ="btn btn-default {namec}button" '
+                 'data-toggle="collapse"></a>'
+                 f'<div id={id} class = "collapse {namec} {self.buttonsclassname}">'
+                 f'  {html}'
+                '</div>'
+            )
+            return returnstr
+        
+        if not options:
+            print(name)
+            return (
+            f'{returnstr}'
+            f'<div class="{name}" data-count="{labelno}">'
+            f'     {html}'
+              '</div>'
+            )
+
+        # End clunky fix
+            
+        
         if "showhide" in options:
             id = uuid4()
             returnstr += (
-                f'<a class="Genericenvno" data-count="{labelno}" data-name="{name}"></a>'
+                f'<a class="Genericenvno" data-count="{labelno}" data-name="{nameu}"></a>'
                 f'<a href="#{id}" class ="btn btn-default Genericenvbutton" '
                 f'data-toggle="collapse" data-name="{namec}"></a>'
                 f'<div id={id} class = "collapse Genericenvbutton {self.buttonsclassname}">'
@@ -245,7 +271,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
 
         return (
                 f'{returnstr}'
-                f'<div class="genericenv" data-count="{labelno}" data-name="{name}">'
+                f'<div class="genericenv" data-count="{labelno}" data-name="{nameu}">'
                 f'     {html}'
                 '</div>'
         ) 
