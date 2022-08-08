@@ -246,7 +246,6 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             return returnstr
         
         if not options:
-            print(name)
             return (
             f'{returnstr}'
             f'<div class="{name}" data-count="{labelno}">'
