@@ -91,6 +91,10 @@ class Lexer(Macros, Verbatim):
                 self.endofinput = True
                 continue
 
+            if self.tok == "PERCENT": # Skip comments
+                self.getnexttok()
+                continue
+
             # Stunts for handling code/verbatim/html environments.
             
             if self.tok == "BEGINENV":
