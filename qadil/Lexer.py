@@ -98,6 +98,9 @@ class Lexer(Macros, Verbatim):
             # Stunts for handling code/verbatim/html environments.
             
             if self.tok == "BEGINENV":
+                if self.value == "\\begin{bokeh}":
+                    self.handlebokeh()
+                    self.getnexttok()
                 if self.value == "\\begin{code}":
                     self.handlecode()
                     self.getnexttok()

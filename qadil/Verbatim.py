@@ -104,3 +104,19 @@ class Verbatim:
         else:
             lineno = self.countlines(self.pos)
             raise Exception("Verbatim environment not ended properly")
+
+    def handlebokeh(self):
+        
+        regex = r'(.*?)\\end\{bokeh\}'
+        regc = re.compile(regex, re.DOTALL)
+        match = regc.match(self.inputstring, self.pos)
+
+        if match:
+            txt = match.group(1)
+            self.pos = match.end(0)
+            self.tokenlist.append(Token(TokenType("BEGINENV"), "\\begin{bokeh}"))
+            self.tokenlist.append(Token(TokenType("TEXT"), txt))
+            self.tokenlist.append(Token(TokenType("ENDENV"), "\\end{bokeh}"))
+        else:
+            lineno = self.countlines(self.pos)
+            raise Exception("Bokeh environment not ended properly")

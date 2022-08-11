@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*
 
 import io
+import re
+import subprocess
 import sys
 from uuid import uuid4
 
@@ -98,6 +100,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         functions(
             "align",
             "author",
+            "bokeh",
             "bye",
             "bibliography",
             "caption",
@@ -331,6 +334,30 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.mathmode = False
         return content
 
+    def bokeh(self, obj):
+        self.verbatim = True
+        pycode = self.parsechildren(obj.body)
+        pycode = pycode.lstrip()
+        self.verbatim = False
+        regex = r'(.*?)show\((.*?)\)'
+        regc = re.compile(regex, re.DOTALL)
+        m = regc.match(pycode)
+        if m:
+            p = m.group(2)
+            pycode = pycode.replace(f'show({p})', f'_dummy = json.dumps(json_item({p}, "test")); print(_dummy)')
+            pycode = "import json; from bokeh.embed import json_item;" + pycode
+            with open("dummy.py", "w") as f:
+                f.write(pycode)
+            html = subprocess.getoutput("python3 dummy.py")
+            regex = r'\{.*\}'
+            regc = re.compile(regex, re.DOTALL)
+            m = regc.match(html)
+            html = m.group(0)
+            
+        else:
+            return f'<p><pre><code>{html}</code></pre></p>'
+
+    
     def bye(self, obj):
         return ""
     
