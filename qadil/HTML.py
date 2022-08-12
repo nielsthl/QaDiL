@@ -353,7 +353,13 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             regc = re.compile(regex, re.DOTALL)
             m = regc.match(html)
             html = m.group(0)
-            
+            return (
+                '<div id="test"></div>'
+                '<script>'
+                f"item = JSON.parse('{html}');"
+                'Bokeh.embed.embed_item(item);'
+                '</script>'
+                )
         else:
             return f'<p><pre><code>{html}</code></pre></p>'
 
