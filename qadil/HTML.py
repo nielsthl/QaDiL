@@ -137,6 +137,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             "newcommand",
             "openeyes",
             "paraquiz",
+            "plotly",
             "proof",
             "proposition",
             "quizexercise",
@@ -691,6 +692,21 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     
     def percent(self, obj):
         return '%'
+
+#
+# https://stackoverflow.com/questions/36262748/python-save-plotly-plot-to-local-file-and-insert-into-html
+#
+    
+    def plotly(self, obj):
+        self.verbatim = True
+        pycode = self.parsechildren(obj.body)
+        pycode = pycode.lstrip()
+        self.verbatim = False
+        with open("dummy.py", "w") as f:
+            f.write(pycode)
+        html = subprocess.getoutput("python3 dummy.py")
+        return(html)
+
     
     def proof(self, obj):
         return self.genericenvstar(obj, "proof")

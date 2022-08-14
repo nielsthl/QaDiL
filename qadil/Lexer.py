@@ -104,6 +104,9 @@ class Lexer(Macros, Verbatim):
                 if self.value == "\\begin{code}":
                     self.handlecode()
                     self.getnexttok()
+                if self.value == "\\begin{plotly}":
+                    self.handleplotly()
+                    self.getnexttok()
                 if self.value == "\\begin{sage}":
                     self.handlesage()
                     self.getnexttok()

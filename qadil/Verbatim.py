@@ -120,3 +120,19 @@ class Verbatim:
         else:
             lineno = self.countlines(self.pos)
             raise Exception("Bokeh environment not ended properly")
+
+    def handleplotly(self):
+        
+        regex = r'(.*?)\\end\{plotly\}'
+        regc = re.compile(regex, re.DOTALL)
+        match = regc.match(self.inputstring, self.pos)
+
+        if match:
+            txt = match.group(1)
+            self.pos = match.end(0)
+            self.tokenlist.append(Token(TokenType("BEGINENV"), "\\begin{plotly}"))
+            self.tokenlist.append(Token(TokenType("TEXT"), txt))
+            self.tokenlist.append(Token(TokenType("ENDENV"), "\\end{plotly}"))
+        else:
+            lineno = self.countlines(self.pos)
+            raise Exception("Plotly environment not ended properly")
