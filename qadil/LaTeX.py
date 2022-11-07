@@ -25,7 +25,7 @@ class LaTeX(Writer):
         
         Writer.__init__(self, inputstring)
  
-        self.graphicsprefix = "/home/niels/IMO/img/"
+        self.graphicsprefix = "/home/niels/QNotes/IMO22/img/"
         self.mathmode = False
         self.verbatim = False
         self.functions = {}
@@ -39,6 +39,7 @@ class LaTeX(Writer):
 
         # "Standard" functions
         functions(
+            "align",
             "chapterno",
             "chapter",
             "code",
@@ -96,6 +97,11 @@ class LaTeX(Writer):
     
 ##### Functions
 
+    @emphasize
+    def align(self, obj):
+
+        latex = self.parsechildren(obj.body)
+        return f'\\begin{{align}}\\begin{{split}}{latex}\\end{{split}}\\end{{align}}' # Only one eqno
 
     def chapterno(self, obj):
         no = int(self.parsearg(obj, 0))-1
