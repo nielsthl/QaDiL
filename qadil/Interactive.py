@@ -3,9 +3,10 @@ import re
 
 class Interactive:
 
-    def __init__(self):
+    def __init__(self, language=None):
         self.quizno = 0
         self.buttonno = 0
+        self.language = language
 
     def testcs(self, c, name):
         if (self.typename(c) == "ControlSequence"):
@@ -245,12 +246,21 @@ class Interactive:
             for index, case in enumerate(cases):
                 caseshtml += f'<span class="orderquizfeedback hidden" datav="{sexpr[index]}">'
                 if truefalse[index] == 'T':
-                    caseshtml += '<b class="correct">Korrekt!</b>'
+                    if self.language == "DA":
+                        caseshtml += '<b class="correct">Korrekt!</b>'
+                    elif self.language == "EN":
+                        caseshtml += '<b class="correct">Correct!</b>'
                 else:
-                    caseshtml += '<b class="wrong">Forkert.</b>'
+                    if self.language == "DA":
+                        caseshtml += '<b class="wrong">Forkert.</b>'
+                    elif self.language == "EN":
+                        caseshtml += '<b class="wrong">Wrong.</b>'
                 caseshtml += ' ' + case + '</span>'
             # Add default
-            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
+            if self.language == "DA":
+                caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
+            elif self.language == "EN":
+                caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Wrong.</b> {default}</span>'
                     
 
             rightsidehtml = ""
@@ -395,12 +405,21 @@ class Interactive:
             for index, case in enumerate(cases):
                 caseshtml += f'<span class="orderquizfeedback hidden" datav="{sexpr[index]}">'
                 if truefalse[index] == 'T':
-                    caseshtml += '<b class="correct">Korrekt!</b>'
+                    if self.language == "DA":
+                        caseshtml += '<b class="correct">Korrekt!</b>'
+                    elif self.language == "EN":
+                        caseshtml += '<b class="correct">Correct!</b>'
                 else:
-                    caseshtml += '<b class="wrong">Forkert.</b>'
+                    if self.language == "DA":
+                        caseshtml += '<b class="wrong">Forkert.</b>'
+                    elif self.language == "EN":
+                        caseshtml += '<b class="wrong">Forkert.</b>'
                 caseshtml += ' ' + case + '</span>'
             # Add default
-            caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
+            if self.language == "DA":
+                caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Forkert.</b> {default}</span>'
+            elif self.language == "EN":
+                caseshtml += f'<span class="orderquizfeedback hidden" datav="default"><b class="wrong">Wrong.</b> {default}</span>'
 
 
             # Patch returnstring
@@ -547,19 +566,34 @@ class Interactive:
         outputHTML += '        ' + question
         outputHTML += '    </div>'
         outputHTML += '    <div class="row formatquizanswer">'
-        outputHTML += '        <b>Dit svar:</b> Det er en'
-        outputHTML += '        <select class="formatquiz-type" onchange="formatQuizChangeType(' + str(self.quizno) + ')">'
-        outputHTML += '            <option value="none" selected></option>'
-        outputHTML += '            <option value="scalar">Skalar</option>'
-        outputHTML += '            <option value="columnvector">Søjlevektor</option>'
-        outputHTML += '            <option value="rowvector">Rækkevektor</option>'
-        outputHTML += '            <option value="matrix">Matrix</option>'
-        outputHTML += '        </select>'
-        outputHTML += '        <span class="formatquiz-scalar hidden">'
-        outputHTML += '            som er'
-        outputHTML += '        </span>'
-        outputHTML += '        <span class="formatquiz-vector hidden">'
-        outputHTML += '            med'
+        if self.language == "DA":
+            outputHTML += '        <b>Dit svar:</b> Det er en'
+            outputHTML += '        <select class="formatquiz-type" onchange="formatQuizChangeType(' + str(self.quizno) + ')">'
+            outputHTML += '            <option value="none" selected></option>'
+            outputHTML += '            <option value="scalar">Skalar</option>'
+            outputHTML += '            <option value="columnvector">Søjlevektor</option>'
+            outputHTML += '            <option value="rowvector">Rækkevektor</option>'
+            outputHTML += '            <option value="matrix">Matrix</option>'
+            outputHTML += '        </select>'
+            outputHTML += '        <span class="formatquiz-scalar hidden">'
+            outputHTML += '            som er'
+            outputHTML += '        </span>'
+            outputHTML += '        <span class="formatquiz-vector hidden">'
+            outputHTML += '            med'
+        elif self.language == "EN":
+            outputHTML += '        <b>Your answer:</b> It is a'
+            outputHTML += '        <select class="formatquiz-type" onchange="formatQuizChangeType(' + str(self.quizno) + ')">'
+            outputHTML += '            <option value="none" selected></option>'
+            outputHTML += '            <option value="scalar">Scalar</option>'
+            outputHTML += '            <option value="columnvector">Column vector</option>'
+            outputHTML += '            <option value="rowvector">Row vector</option>'
+            outputHTML += '            <option value="matrix">Matrix</option>'
+            outputHTML += '        </select>'
+            outputHTML += '        <span class="formatquiz-scalar hidden">'
+            outputHTML += '            which is'
+            outputHTML += '        </span>'
+            outputHTML += '        <span class="formatquiz-vector hidden">'
+            outputHTML += '            with'
         outputHTML += '            <select onchange="formatQuizChangeMatrixSize(' + str(self.quizno) + ')">'
         outputHTML += '                <option value="none" selected></option>'
         outputHTML += '                <option value="1">1</option>'
@@ -567,10 +601,16 @@ class Interactive:
         outputHTML += '                <option value="3">3</option>'
         outputHTML += '                <option value="4">4</option>'
         outputHTML += '            </select>'
-        outputHTML += '            indgange'
-        outputHTML += '        </span>'
-        outputHTML += '        <span class="formatquiz-matrix hidden">'
-        outputHTML += '            med størrelse'
+        if self.language == "DA":
+            outputHTML += '            indgange'
+            outputHTML += '        </span>'
+            outputHTML += '        <span class="formatquiz-matrix hidden">'
+            outputHTML += '            med størrelse'
+        elif self.language == "EN":
+            outputHTML += '            entries'
+            outputHTML += '        </span>'
+            outputHTML += '        <span class="formatquiz-matrix hidden">'
+            outputHTML += '            with dimensions'
         outputHTML += '            <select onchange="formatQuizChangeMatrixSize(' + str(self.quizno) + ')" class="matrixrows">'
         outputHTML += '                <option value="none" selected></option>'
         outputHTML += '                <option value="1">1</option>'
@@ -588,19 +628,34 @@ class Interactive:
         outputHTML += '            </select>'
         outputHTML += '        </span>'
         outputHTML += '        <span class="formatquiz-numbers hidden">'
-        outputHTML += '            givet ved'
-        outputHTML += '            <table class="number-table">'
-        outputHTML += '            </table>'
-        outputHTML += '            <input type="button" value="Check" onclick="formatQuizCheckAnswer(' + str(self.quizno) + ', formatQuizProgram' + str(self.quizno) + ')">'
-        outputHTML += '            <span class="result">'
-        outputHTML += '                <span class="number-errors">'
-        outputHTML += '                </span>'
-        outputHTML += '                <span class="correct hidden">'
-        outputHTML += '                    <b>Korrekt!</b>'
-        outputHTML += '                </span>'
-        outputHTML += '                <span class="wrong hidden">'
-        outputHTML += '                    <b>Forkert.</b>'
-        outputHTML += '                </span>'
+        if self.language == "DA":
+            outputHTML += '            givet ved'
+            outputHTML += '            <table class="number-table">'
+            outputHTML += '            </table>'
+            outputHTML += '            <input type="button" value="Check" onclick="formatQuizCheckAnswer(' + str(self.quizno) + ', formatQuizProgram' + str(self.quizno) + ')">'
+            outputHTML += '            <span class="result">'
+            outputHTML += '                <span class="number-errors">'
+            outputHTML += '                </span>'
+            outputHTML += '                <span class="correct hidden">'
+            outputHTML += '                    <b>Korrekt!</b>'
+            outputHTML += '                </span>'
+            outputHTML += '                <span class="wrong hidden">'
+            outputHTML += '                    <b>Forkert.</b>'
+            outputHTML += '                </span>'
+        elif self.language == "EN":
+            outputHTML += '            given by'
+            outputHTML += '            <table class="number-table">'
+            outputHTML += '            </table>'
+            outputHTML += '            <input type="button" value="Check" onclick="formatQuizCheckAnswer(' + str(self.quizno) + ', formatQuizProgram' + str(self.quizno) + ')">'
+            outputHTML += '            <span class="result">'
+            outputHTML += '                <span class="number-errors">'
+            outputHTML += '                </span>'
+            outputHTML += '                <span class="correct hidden">'
+            outputHTML += '                    <b>Correct!</b>'
+            outputHTML += '                </span>'
+            outputHTML += '                <span class="wrong hidden">'
+            outputHTML += '                    <b>Wrong.</b>'
+            outputHTML += '                </span>'
         outputHTML += '            </span>'
         outputHTML += '            <script type="text/javascript">'
         outputHTML += '                ' + jsProgram
