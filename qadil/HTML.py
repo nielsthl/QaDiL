@@ -27,15 +27,17 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
 
 
     
-    def __init__(self, inputstring, filefirstname = None):
+    def __init__(self, inputstring, filefirstname = None, language = None):
         
         Writer.__init__(self, inputstring)
         Enumerate.__init__(self)
-        Interactive.__init__(self)
+        Interactive.__init__(self, language=language)
         Bibliography.__init__(self)
 
         self.tocfile = io.open(filefirstname + ".toc", "w", encoding="utf8")
         self.lblfile = io.open(filefirstname + ".lbl", "w", encoding="utf8")
+
+        self.language = language
 
         self.authorname = ""
         self.titlename = ""
