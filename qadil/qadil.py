@@ -7,7 +7,7 @@ from HTML import HTML
 
 arg_parser = argparse.ArgumentParser(description="QaDiL")
 arg_parser.add_argument("filename")
-arg_parser.add_argument("--language", help="Two letter abbreviation of language, e.g. EN for English.", default="DA")
+arg_parser.add_argument("--language", help="Two letter abbreviation of language, EN for English, DA for Danish.", default="EN")
 args = arg_parser.parse_args()
 
 filename = args.filename
