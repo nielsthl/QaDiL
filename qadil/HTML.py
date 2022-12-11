@@ -159,11 +159,13 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
 
         # Special care for special characters in function names
         self.functions["align*"] = getattr(self, "alignstar")
+        self.functions[" "] = getattr(self, "blankspace")
         self.functions["equation*"] = getattr(self, "equationstar")
         self.functions["section*"] = getattr(self, "sectionstar")
 
         self.functions["%"] = getattr(self, "percent")
         self.functions["#"] = getattr(self, "hashtag")
+
         
         # Inherited functions (Enumerate)
         functions("itemize", "enumerate")
@@ -333,6 +335,13 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.mathmode = False
         return content
 
+    def blankspace(self, obj):
+        if self.mathmode:
+            return '\\ '
+        else:
+            return ' '
+
+    
     def bye(self, obj):
         return ""
     
