@@ -1,0 +1,65 @@
+
+<script>
+
+pageUpCode = 34;
+pageDownCode = 33;
+
+currentSlide = 0;
+
+window.onload = function() {
+ var i;
+ var slides = document.getElementsByClassName("slide");
+   for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";
+   }
+ slides[currentSlide].style.display = "block";
+}
+
+document.addEventListener("keydown",
+   function(e){
+      changeSlides(e);
+      }
+)
+
+
+function changeSlides(e) {
+var i;
+
+key = e.keyCode;
+
+
+
+console.log("Key pressed with code = " + key.toString());
+
+   key = e.keyCode;
+   if (key != pageUpCode && key != pageDownCode)
+      return;
+
+   e.preventDefault();
+   var slides = document.getElementsByClassName("slide");
+
+console.log("Slides length = " + (slides.length).toString());
+
+   for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";
+   }
+   if (key == pageUpCode) {
+      currentSlide += 1;
+      if (currentSlide == slides.length) {
+         currentSlide = slides.length-1;
+      }
+   }
+   else {
+      currentSlide -= 1;
+      if (currentSlide == -1) {
+         currentSlide = 0;
+      }
+   }
+   slides[currentSlide].style.display = "block";
+
+}
+
+</script>
+
+
+
