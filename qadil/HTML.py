@@ -144,6 +144,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             "remark",
             "sage",
             "section",
+            "slide",
             "subsection",
             "textbf",
             "textcolor",
@@ -403,27 +404,47 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         return ('<!doctype html>\n<head>')
 
     def document(self, obj):
-        # env
-        # Notice bootstrap option: \begin{document}[bootstrap]
+        # 
+        # Currently two options none and "slides". No option defaults to sidebar below.
         #
+        # The slides option is invoked with
+        #
+        # \begin{document}[slides]
+        #
+        # Each slide is inside \begin{slide} ... \end{slide}
+        #
+        # slides uses embedded js code in QaDiL/qadil/htmlinclude/slides
+        #
+        # i.e., \includehtml{slides} must be present in preamble
+        #
+        
         self.verbatim = False
-        #
-        # No options currently for layout. Sidebar is default.
-        #
-        pre = (            
-            '<div class="sidenav normalwidth">'
-            '<button style="border:none; background-color: Transparent;" onclick="showhidemenu()" title="Toggle toc">'
-            '<span style="font-size: 30px;">&#9776;</span>'
-            '</button>'
-            '<button class="openbs" title="Open buttons">+</button>'
-            '<button class="closebs" title="Close buttons">-</button>'
-            '<ul class="leftmenu" style="display: none;">'
-            '<!-- Table of contents not generated -->'
-            '</ul>'
-            '</div>'
-            '<div class="main normalmargin">'
-        )
-        post = '</div>'
+        if len(obj.opts) == 0: # No options - sidebar is default
+            pre = (            
+                '<div class="sidenav normalwidth">'
+                '<button style="border:none; background-color: Transparent;" onclick="showhidemenu()" title="Toggle toc">'
+                '<span style="font-size: 30px;">&#9776;</span>'
+                '</button>'
+                '<button class="openbs" title="Open buttons">+</button>'
+                '<button class="closebs" title="Close buttons">-</button>'
+                '<ul class="leftmenu" style="display: none;">'
+                '<!-- Table of contents not generated -->'
+                '</ul>'
+                '</div>'
+                '<div class="main normalmargin">'
+            )
+            post = '</div>'
+        else:
+            if obj.opts[0][0].content == "slides":
+                pre = (
+                    '<div class="container"><div class="row"><div class="col-xs-1">'
+                    '</div>'
+                    '<div class="col-xs-11">'
+                )
+                post = '</div></div></div>'
+                
+                #pre=''
+                #post=''
         '''
         if len(obj.opts) > 0:
             if obj.opts[0][0].content == "bootstrap":
@@ -771,7 +792,11 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
 
     def sectionstar(self, obj):
         return f"<h2>{self.parsearg(obj, 0)}</h2>"
-    
+
+    def slide(self, obj):
+        src = self.parsechildren(obj.body)
+        return f'<div class="slide">{src}</div>'
+
     def subsection(self, obj):
         #cs
         self.subsectioncounter += 1
