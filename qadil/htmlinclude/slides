@@ -1,8 +1,11 @@
 
 <script>
 
-pageUpCode = 34;
-pageDownCode = 33;
+//pageUpCode = 34; // PgUp
+//pageDownCode = 33; // PgDn
+
+pageUpCode = 39 // left arrow
+pageDownCode = 37 // right arrow
 
 currentSlide = 0;
 
