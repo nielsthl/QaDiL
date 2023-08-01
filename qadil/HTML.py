@@ -419,8 +419,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         #
         
         self.verbatim = False
-        if len(obj.opts) == 0: # No options - sidebar is default
-            pre = (            
+        pre = (            
                 '<div class="sidenav normalwidth">'
                 '<button style="border:none; background-color: Transparent;" onclick="showhidemenu()" title="Toggle toc">'
                 '<span style="font-size: 30px;">&#9776;</span>'
@@ -433,18 +432,23 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
                 '</div>'
                 '<div class="main normalmargin">'
             )
-            post = '</div>'
+        post = '</div>'
+        if len(obj.opts) == 0: # No options - sidebar is default
+           pass
         else:
-            if obj.opts[0][0].content == "slides":
-                pre = (
-                    '<div class="container"><div class="row"><div class="col-xs-1">'
-                    '</div>'
-                    '<div class="col-xs-11">'
-                )
-                post = '</div></div></div>'
-                
-                #pre=''
-                #post=''
+            if obj.opts[0][0].content == "sidebar":
+                pass
+            else:
+                if obj.opts[0][0].content == "slides":
+                    pre = (
+                        '<div class="container"><div class="row"><div class="col-xs-1">'
+                        '</div>'
+                        '<div class="col-xs-11">'
+                    )
+                    post = '</div></div></div>'
+                else:  
+                    pre=''
+                    post=''
         '''
         if len(obj.opts) > 0:
             if obj.opts[0][0].content == "bootstrap":
