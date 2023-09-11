@@ -99,6 +99,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         # "Standard" functions
         functions(
             "align",
+            "alignstar",
             "author",
             "bye",
             "bibliography",
@@ -120,6 +121,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             "exercise",
             "example",
             "equation",
+            "equationstar",
             "figure",
             "footnote",
             "frameit",
@@ -326,6 +328,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.authorname = self.parsearg(obj, 0)
         return ""
     
+    @emphasize
     def alignstar(self, obj):
         # env
         self.mathmode = True
@@ -546,7 +549,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         htxt = self.parsearg(obj, 0)
         fntxt = self.parsearg(obj, 1)
         return  f'<span class="bubblelabel footnotecolor">{htxt}</span><span class="bubblecontent"><span class="bubbleinnercontent">{fntxt}</span></span>'
-
+    
     def frameit(self, obj):
         return self.genericenvstar(obj, "frameit")
     
