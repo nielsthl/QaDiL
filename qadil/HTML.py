@@ -117,6 +117,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             "documentclass",
             "document",
             "emph",
+            "emphquote",
             "eqref",
             "exercise",
             "example",
@@ -491,6 +492,10 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
     def emph(self, obj):
         html = self.parsearg(obj, 0)
         return f'<em>{html}</em>'
+
+    def emphquote(self, obj):
+        html = self.parsechildren(obj.body)
+        return f'<div class="emphasize">{html}</div>'        
     
     def eqref(self, obj):
         label = self.parsearg(obj, 0)
@@ -550,6 +555,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         fntxt = self.parsearg(obj, 1)
         return  f'<span class="bubblelabel footnotecolor">{htxt}</span><span class="bubblecontent"><span class="bubbleinnercontent">{fntxt}</span></span>'
     
+
     def frameit(self, obj):
         return self.genericenvstar(obj, "frameit")
     
