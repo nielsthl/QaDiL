@@ -166,6 +166,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.functions[" "] = getattr(self, "blankspace")
         self.functions["equation*"] = getattr(self, "equationstar")
         self.functions["section*"] = getattr(self, "sectionstar")
+        self.functions["subsection*"] = getattr(self, "subsectionstar")
 
         self.functions["%"] = getattr(self, "percent")
         self.functions["#"] = getattr(self, "hashtag")
@@ -818,6 +819,10 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.currentlabel = labelname
         return f'<span id="{labelname}"></span><h3>{labelno} {self.parsearg(obj, 0)}</h3>'
 
+    def subsectionstar(self, obj):
+        return f"<h3>{self.parsearg(obj, 0)}</h3>"
+
+    
     def textbf(self, obj):
         html = self.parsearg(obj, 0)
         if self.mathmode:

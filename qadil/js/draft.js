@@ -1,29 +1,35 @@
-// Function to check for file changes, reload the page, and handle scroll position
 function checkForChangesAndReload() {
     const currentURL = window.location.href;
 
     $.ajax({
         type: 'HEAD',
         url: currentURL,
-        success: function(data, status, xhr) {
-          const currentTimestamp = new Date(xhr.getResponseHeader('Last-Modified')).getTime();
+        success: function (data, status, xhr) {
+            const currentTimestamp = new Date(xhr.getResponseHeader('Last-Modified')).getTime();
 
-          // Check if file has changed
-          if (currentTimestamp > lastModifiedTimestamp) {
-            // File has changed, reload the page
-            console.log('Reloading the page...');
-            location.reload();
-          } else {
-            // Restore the scroll position
-            const savedScrollPos = localStorage.getItem('scrollPos');
-            if (savedScrollPos !== null) {
-              $(window).scrollTop(parseInt(savedScrollPos));
+            // Initialize lastModifiedTimestamp from localStorage, if available
+            let lastModifiedTimestamp = localStorage.getItem('lastModifiedTimestamp');
+            if (lastModifiedTimestamp === null) {
+                lastModifiedTimestamp = 0;
+            } else {
+                lastModifiedTimestamp = parseInt(lastModifiedTimestamp, 10);
             }
-          }
 
-          // Update the timestamp and store it in localStorage
-          lastModifiedTimestamp = currentTimestamp;
-          localStorage.setItem('lastModifiedTimestamp', lastModifiedTimestamp);
+            // Check if file has changed
+            if (currentTimestamp > lastModifiedTimestamp) {
+                // File has changed, reload the page
+                console.log('Reloading the page...');
+                location.reload();
+            } else {
+                // Restore the scroll position
+                const savedScrollPos = localStorage.getItem('scrollPos');
+                if (savedScrollPos !== null) {
+                    $(window).scrollTop(parseInt(savedScrollPos, 10));
+                }
+            }
+
+            // Update the timestamp and store it in localStorage
+            localStorage.setItem('lastModifiedTimestamp', currentTimestamp.toString());
         }
     });
 }
@@ -32,21 +38,14 @@ function checkForChangesAndReload() {
 $(".envbuttons").collapse('show');
 
 // When the user scrolls, save the scroll position
-$(window).on('scroll', function() {
-    localStorage.setItem('scrollPos', $(window).scrollTop());
+$(window).on('scroll', function () {
+    localStorage.setItem('scrollPos', $(window).scrollTop().toString());
 });
 
 // When the page is loaded
-$(document).ready(function() {
-    // Initialize lastModifiedTimestamp from localStorage, if available
-    lastModifiedTimestamp = localStorage.getItem('lastModifiedTimestamp');
-    if (lastModifiedTimestamp === null) {
-	lastModifiedTimestamp = 0;
-    } else
-	lastModifiedTimestamp = parseInt(lastModifiedTimestamp);
+$(document).ready(function () {
+    checkForChangesAndReload(); // Check for file changes and handle scroll position (initial check)
  
-      checkForChangesAndReload(); // Check for file changes and handle scroll position (initial check)
-
-      // Check for changes and handle scroll position every 2 seconds (adjust as needed)
-      setInterval(checkForChangesAndReload, 2000);
+    // Check for changes and handle scroll position every 2 seconds (adjust as needed)
+    setInterval(checkForChangesAndReload, 2000);
 });
