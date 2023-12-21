@@ -25,7 +25,14 @@ class LaTeX(Writer):
         
         Writer.__init__(self, inputstring)
  
-        self.graphicsprefix = "/home/niels/QNotes/IMO22/img/"
+#        self.graphicsprefix = "/home/niels/QNotes/IMO22/img/"
+#
+# Assuming work dir is ".../projectdir/Kompendium" below
+#
+        current_directory = os.getcwd()
+        parent_directory = os.path.dirname(current_directory)
+        self.graphicsprefix = parent_directory + "/img/"
+        
         self.mathmode = False
         self.verbatim = False
         self.functions = {}
@@ -50,7 +57,9 @@ class LaTeX(Writer):
             "exercise",
             "example",
             "equation",
+            "equationstar",
             "footnote",
+            "frameit",
             "hideinbutton",
             "hint",
             "htmlpath",
@@ -178,6 +187,10 @@ class LaTeX(Writer):
             sys.exit("Wrong parameters in footnote")
 
         return f'{htxt}\\footnote{{{fn}}}'
+
+    def frameit(self, obj): # swallow optional parameters
+        latex = self.parsechildren(obj.body)
+        return f'\\begin{{frameit}}{latex}\\end{{frameit}}'
     
     def hideinbutton(self, obj):
         buttontitle = self.parsearg(obj, 0)

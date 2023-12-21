@@ -11,7 +11,7 @@ class Token:
 
     SYMBOL = TokenType('SYMBOL', r'&')
     BEGINENV = TokenType('BEGINENV', r'\\begin\{([A-Za-z\*]+)\}')
-    CONTROLSEQ = TokenType('CONTROLSEQ', r'\\(\\|,|\{|\}|#|%|&|[A-Za-z*]+| )') # Special: '\', ',',' '(csq blankspace)
+    CONTROLSEQ = TokenType('CONTROLSEQ', r'\\(\\|,|\{|\}|#|;|%|&|[A-Za-z*]+| )') # Special: '\', ',',' '(csq blankspace)
     DISPLAYDELIMITER = TokenType('DISPLAYDELIMITER',  r'\$\$')
     ENDENV = TokenType('ENDENV', r'\\end\{([A-Za-z\*]+)\}')
     BEGINGROUP = TokenType('BEGINGROUP', r'\{')
