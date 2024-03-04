@@ -109,6 +109,7 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
             "chapter",
             "chaptername",
             "chapterno",
+            "comment",
             "code",
             "conjecture",
             "corollary",
@@ -391,6 +392,10 @@ class HTML(Writer, Enumerate, Interactive, Bibliography):
         self.verbatim = False
         return f'<p><pre><code>{html}</code></pre></p>'
 
+    def comment(self, obj):
+        html = self.parsechildren(obj.body)
+        return ""
+    
     @emphasize
     def conjecture(self, obj):
         return self.genericenv(obj, "conjecture")
