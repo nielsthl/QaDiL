@@ -13,4 +13,4 @@ The proof is omitted here.
 ```
 indicating that an element in the LaTeX code (proof) must appear hidden in a button. QaDiL
 has been used extensively at [Department of Mathematics](https://math.au.dk/en) at [Aarhus University](https://au.dk/en). A 
-detailed manual is available at https://edtech.dk/QaDiL.
+detailed manual is available at https://qadil.stemedtech.com.
